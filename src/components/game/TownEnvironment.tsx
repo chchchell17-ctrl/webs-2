@@ -9,8 +9,11 @@ import {
 } from 'lucide-react';
 import {
   TOWN_BUILDINGS,
+  TOWN_PATH_NODES,
+  findNearestBuildingToPoint,
   findPathBetweenNodes,
   resolveWalkableClick,
+  stepAlongTownPath,
 } from '../../data/townData.ts';
 import type {
   AvatarConfig,
@@ -25,7 +28,18 @@ import { DetectiveAvatar } from './DetectiveAvatar.tsx';
 import { PusheenIllustration } from './PusheenIllustration.tsx';
 import { TownMapScene } from './TownMapScene.tsx';
 
-export type CameraFocus = 'sky' | 'hills' | 'stream' | 'nature' | 'town' | 'plaza' | 'hq';
+export type CameraFocus =
+  | 'sky'
+  | 'hills'
+  | 'stream'
+  | 'nature'
+  | 'town'
+  | 'plaza'
+  | 'hq'
+  | 'red-flag'
+  | 'aina'
+  | 'cafe'
+  | 'advice';
 
 export type TownPusheenState = 'hidden' | 'peeking' | 'beside-player' | 'following-hq';
 
@@ -44,6 +58,16 @@ interface TownEnvironmentProps {
   highlightHq?: boolean;
   hqIlluminated?: boolean;
   hqDoorOpen?: boolean;
+  redFlagIlluminated?: boolean;
+  redFlagDoorOpen?: boolean;
+  ainaIlluminated?: boolean;
+  ainaDoorOpen?: boolean;
+  cafeIlluminated?: boolean;
+  cafeDoorOpen?: boolean;
+  adviceIlluminated?: boolean;
+  adviceDoorOpen?: boolean;
+  scriptedWalkToNode?: { nodeId: string; key: number } | null;
+  onScriptedWalkCompleted?: () => void;
   showRustleBehindTree?: boolean;
   customMapMedia?: CustomMapMedia | null;
   pusheenState: TownPusheenState;
@@ -68,6 +92,10 @@ const CAMERA_TRANSFORM: Record<CameraFocus, string> = {
   town: 'scale(1) translate3d(0%, 0%, 0)',
   plaza: 'scale(1.3) translate3d(3%, -14%, 0)',
   hq: 'scale(1.38) translate3d(20%, 4%, 0)',
+  'red-flag': 'scale(1.36) translate3d(8%, 7%, 0)',
+  aina: 'scale(1.34) translate3d(-12%, 7%, 0)',
+  cafe: 'scale(1.34) translate3d(-22%, 2%, 0)',
+  advice: 'scale(1.34) translate3d(-4%, -16%, 0)',
 };
 
 export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
@@ -85,6 +113,16 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
   highlightHq = false,
   hqIlluminated = false,
   hqDoorOpen = false,
+  redFlagIlluminated = false,
+  redFlagDoorOpen = false,
+  ainaIlluminated = false,
+  ainaDoorOpen = false,
+  cafeIlluminated = false,
+  cafeDoorOpen = false,
+  adviceIlluminated = false,
+  adviceDoorOpen = false,
+  scriptedWalkToNode = null,
+  onScriptedWalkCompleted,
   showRustleBehindTree = false,
   customMapMedia = null,
   pusheenState,
@@ -111,6 +149,23 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
   const [wobbleBuildingId, setWobbleBuildingId] = useState<BuildingId | null>(null);
 
   const walkCancelRef = useRef<number>(0);
+  const positionRef = useRef<AvatarPosition>(position);
+  positionRef.current = position;
+  const onPositionChangeRef = useRef(onPositionChange);
+  onPositionChangeRef.current = onPositionChange;
+  const onMovementCompletedRef = useRef(onMovementCompleted);
+  onMovementCompletedRef.current = onMovementCompleted;
+  const onSelectBuildingRef = useRef(onSelectBuilding);
+  onSelectBuildingRef.current = onSelectBuilding;
+  const allowBuildingClicksRef = useRef(allowBuildingClicks);
+  allowBuildingClicksRef.current = allowBuildingClicks;
+
+  const pressedDirsRef = useRef<Set<'up' | 'down' | 'left' | 'right'>>(new Set());
+  const rafIdRef = useRef<number | null>(null);
+  const lastFrameRef = useRef<number>(0);
+  const movedDuringBurstRef = useRef<boolean>(false);
+  const burstFeedbackFiredRef = useRef<boolean>(false);
+  const burstStartTimeRef = useRef<number>(0);
 
   useEffect(() => {
     if (lockedFeedbackBuildingId) {
@@ -120,6 +175,9 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
     }
   }, [lockedFeedbackBuildingId]);
 
+  const onScriptedWalkCompletedRef = useRef(onScriptedWalkCompleted);
+  onScriptedWalkCompletedRef.current = onScriptedWalkCompleted;
+
   // Auto-pan mobile scrollable container toward focus area
   useEffect(() => {
     const el = scrollWrapRef.current;
@@ -127,18 +185,29 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
     const targetFrac =
       cameraFocus === 'hq'
         ? 0.1
-        : cameraFocus === 'stream'
-          ? 0.82
-          : cameraFocus === 'nature'
-            ? 0.22
-            : 0.48;
+        : cameraFocus === 'red-flag'
+          ? 0.28
+          : cameraFocus === 'aina'
+            ? 0.64
+            : cameraFocus === 'cafe'
+              ? 0.84
+              : cameraFocus === 'stream'
+                ? 0.82
+                : cameraFocus === 'nature'
+                  ? 0.22
+                  : 0.48;
     const targetLeft = (el.scrollWidth - el.clientWidth) * targetFrac;
     el.scrollTo({ left: targetLeft, behavior: reducedMotion ? 'auto' : 'smooth' });
   }, [cameraFocus, reducedMotion]);
 
   // Animate multi-waypoint walk along walkable stone path with constant speed per waypoint
-  const walkAlongPath = (targetX: number, targetY: number, targetNodeId: string) => {
-    const startNodeId = position.nodeId || 'plaza-center';
+  const walkAlongPath = (
+    targetX: number,
+    targetY: number,
+    targetNodeId: string,
+    onDone?: () => void
+  ) => {
+    const startNodeId = positionRef.current.nodeId || 'plaza-center';
     const pathNodes = findPathBetweenNodes(startNodeId, targetNodeId);
     const waypoints: Array<{ x: number; y: number; nodeId: string }> = [
       ...pathNodes.map((n) => ({ x: n.x, y: n.y, nodeId: n.id })),
@@ -157,7 +226,8 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
         setAvatarPose('idle');
         setAvatarView('front');
         setDestinationRing(null);
-        onMovementCompleted?.();
+        onMovementCompletedRef.current?.();
+        onDone?.();
         return;
       }
 
@@ -173,7 +243,7 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
       const distance = Math.hypot(dx, dy);
       const durationMs = reducedMotion ? 40 : Math.max(140, Math.min(720, Math.round(distance * 26)));
       setWalkStepDurationMs(durationMs);
-      onPositionChange(nextPt);
+      onPositionChangeRef.current(nextPt);
       stepIdx += 1;
 
       window.setTimeout(() => {
@@ -181,45 +251,169 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
       }, durationMs);
     };
 
-    stepNext(position.x, position.y);
+    stepNext(positionRef.current.x, positionRef.current.y);
   };
 
-  // Optional keyboard WASD / Arrow-key movement along walkable stone network
   useEffect(() => {
-    if (!allowMovement) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedBuilding) return;
-      const tag = (e.target as HTMLElement | null)?.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (!scriptedWalkToNode) return;
+    const node = TOWN_PATH_NODES[scriptedWalkToNode.nodeId];
+    if (!node) return;
+    walkAlongPath(node.x, node.y, node.id, () => {
+      onScriptedWalkCompletedRef.current?.();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scriptedWalkToNode?.key, scriptedWalkToNode?.nodeId]);
+
+  // Continuous 60fps keyboard WASD / Arrow-key movement along walkable cobblestone network
+  useEffect(() => {
+    const stopLoop = (notifyMove: boolean) => {
+      if (rafIdRef.current !== null) {
+        window.cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+      lastFrameRef.current = 0;
+      if (movedDuringBurstRef.current) {
+        setAvatarPose('idle');
+        if (notifyMove) {
+          onMovementCompletedRef.current?.();
+        }
+      }
+      movedDuringBurstRef.current = false;
+      burstFeedbackFiredRef.current = false;
+      burstStartTimeRef.current = 0;
+    };
+
+    if (!allowMovement || selectedBuilding) {
+      pressedDirsRef.current.clear();
+      stopLoop(false);
+      return;
+    }
+
+    const keyToDir = (key: string): 'up' | 'down' | 'left' | 'right' | null => {
+      const lower = key.toLowerCase();
+      if (key === 'ArrowUp' || lower === 'w') return 'up';
+      if (key === 'ArrowDown' || lower === 's') return 'down';
+      if (key === 'ArrowLeft' || lower === 'a') return 'left';
+      if (key === 'ArrowRight' || lower === 'd') return 'right';
+      return null;
+    };
+
+    const tick = (now: number) => {
+      const dirs = pressedDirsRef.current;
+      if (dirs.size === 0) {
+        stopLoop(true);
+        return;
+      }
 
       let dirX = 0;
       let dirY = 0;
-      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') dirY = -1;
-      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') dirY = 1;
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') dirX = -1;
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') dirX = 1;
+      if (dirs.has('left')) dirX -= 1;
+      if (dirs.has('right')) dirX += 1;
+      if (dirs.has('up')) dirY -= 1;
+      if (dirs.has('down')) dirY += 1;
 
-      if (dirX === 0 && dirY === 0) return;
-      e.preventDefault();
+      if (dirX === 0 && dirY === 0) {
+        lastFrameRef.current = now;
+        rafIdRef.current = window.requestAnimationFrame(tick);
+        return;
+      }
 
-      const candidateX = Math.max(4, Math.min(90, position.x + dirX * 5));
-      const candidateY = Math.max(42, Math.min(88, position.y + dirY * 5));
-      const snapped = resolveWalkableClick(candidateX, candidateY, 9.5);
-      if (snapped) {
+      const dt = lastFrameRef.current
+        ? Math.min(0.05, Math.max(0.008, (now - lastFrameRef.current) / 1000))
+        : 0.016;
+      lastFrameRef.current = now;
+
+      if (!burstStartTimeRef.current) {
+        burstStartTimeRef.current = now;
+      }
+
+      const speed = reducedMotion ? 16 : 22;
+      const stepDist = speed * dt;
+      const curr = positionRef.current;
+      const next = stepAlongTownPath(curr.x, curr.y, dirX, dirY, stepDist);
+
+      if (!movedDuringBurstRef.current) {
+        movedDuringBurstRef.current = true;
         playSoftSelect();
-        if (dirX !== 0) setAvatarView(dirX > 0 ? 'right' : 'left');
-        else setAvatarView(dirY < 0 ? 'back' : 'front');
-        setWalkStepDurationMs(reducedMotion ? 40 : 210);
-        setAvatarPose('walk');
-        onPositionChange({ x: snapped.x, y: snapped.y, nodeId: snapped.nearestNodeId });
-        onMovementCompleted?.();
-        window.setTimeout(() => setAvatarPose('idle'), 230);
+      }
+
+      if (Math.abs(dirX) >= Math.abs(dirY) && dirX !== 0) {
+        setAvatarView(dirX > 0 ? 'right' : 'left');
+      } else if (dirY !== 0) {
+        setAvatarView(dirY < 0 ? 'back' : 'front');
+      }
+
+      setWalkStepDurationMs(0);
+      setAvatarPose('walk');
+      positionRef.current = next;
+      onPositionChangeRef.current(next);
+
+      if (!burstFeedbackFiredRef.current && now - burstStartTimeRef.current > 320) {
+        burstFeedbackFiredRef.current = true;
+        onMovementCompletedRef.current?.();
+      }
+
+      rafIdRef.current = window.requestAnimationFrame(tick);
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+      if ((e.key === 'Enter' || e.key === 'e' || e.key === 'E') && allowBuildingClicksRef.current) {
+        const nearby = findNearestBuildingToPoint(
+          positionRef.current.x,
+          positionRef.current.y,
+          12
+        );
+        if (nearby) {
+          e.preventDefault();
+          playSoftSelect();
+          onSelectBuildingRef.current(nearby);
+        }
+        return;
+      }
+
+      const dir = keyToDir(e.key);
+      if (!dir) return;
+
+      e.preventDefault();
+      // Cancel any active click-to-walk so WASD takes immediate control
+      walkCancelRef.current = 0;
+      setDestinationRing(null);
+
+      pressedDirsRef.current.add(dir);
+      if (rafIdRef.current === null) {
+        lastFrameRef.current = 0;
+        rafIdRef.current = window.requestAnimationFrame(tick);
       }
     };
 
+    const handleKeyUp = (e: KeyboardEvent) => {
+      const dir = keyToDir(e.key);
+      if (!dir) return;
+      pressedDirsRef.current.delete(dir);
+      if (pressedDirsRef.current.size === 0) {
+        stopLoop(true);
+      }
+    };
+
+    const handleBlur = () => {
+      pressedDirsRef.current.clear();
+      stopLoop(true);
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [allowMovement, selectedBuilding, position, reducedMotion, onPositionChange, onMovementCompleted]);
+    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('blur', handleBlur);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('blur', handleBlur);
+      pressedDirsRef.current.clear();
+      stopLoop(false);
+    };
+  }, [allowMovement, selectedBuilding, reducedMotion]);
 
   const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!allowMovement || !mapStageRef.current) return;
@@ -251,6 +445,11 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
   const selectedIsUnlocked = selectedBuilding
     ? unlockedBuildings.includes(selectedBuilding.id)
     : false;
+
+  const nearbyBuilding =
+    allowMovement && allowBuildingClicks && !selectedBuilding
+      ? findNearestBuildingToPoint(position.x, position.y, 11)
+      : null;
 
   const isCustomVideo = Boolean(customMapMedia?.mimeType.startsWith('video/'));
 
@@ -296,6 +495,14 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
               highlightPathway={highlightPathway}
               hqIlluminated={hqIlluminated}
               hqDoorOpen={hqDoorOpen}
+              redFlagIlluminated={redFlagIlluminated}
+              redFlagDoorOpen={redFlagDoorOpen}
+              ainaIlluminated={ainaIlluminated}
+              ainaDoorOpen={ainaDoorOpen}
+              cafeIlluminated={cafeIlluminated}
+              cafeDoorOpen={cafeDoorOpen}
+              adviceIlluminated={adviceIlluminated}
+              adviceDoorOpen={adviceDoorOpen}
               showRustleBehindTree={showRustleBehindTree}
             />
           )}
@@ -408,12 +615,18 @@ export const TownEnvironment: React.FC<TownEnvironmentProps> = ({
             style={{
               left: `${position.x}%`,
               top: `${position.y}%`,
-              transition: reducedMotion
-                ? 'none'
-                : `left ${walkStepDurationMs}ms linear, top ${walkStepDurationMs}ms linear`,
+              transition:
+                reducedMotion || walkStepDurationMs === 0
+                  ? 'none'
+                  : `left ${walkStepDurationMs}ms linear, top ${walkStepDurationMs}ms linear`,
             }}
             className="absolute -translate-x-1/2 -translate-y-[84%] z-20 flex flex-col items-center pointer-events-none"
           >
+            {nearbyBuilding && (
+              <div className="mb-1 rounded-full bg-[#0E3558]/90 border border-sky-200/80 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-extrabold text-white shadow-md whitespace-nowrap">
+                Press E / Enter · {nearbyBuilding.name}
+              </div>
+            )}
             <div className="mb-0.5 rounded-full bg-white/94 border border-purple-200 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-extrabold text-[#6D28D9] shadow-sm whitespace-nowrap">
               {nickname}
             </div>

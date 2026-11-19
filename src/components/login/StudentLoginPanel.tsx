@@ -30,19 +30,9 @@ export const StudentLoginPanel: React.FC<StudentLoginPanelProps> = ({
     e.preventDefault();
     if (isSubmitting) return;
 
-    const trimmedClass = classCode.trim();
-    const trimmedStudent = studentId.trim();
-    const trimmedPin = pin.trim();
-
-    if (!trimmedClass || !trimmedStudent || !trimmedPin) {
-      playErrorTone();
-      setFeedback({
-        tone: 'error',
-        code: 'EMPTY_FIELDS',
-        message: 'Oops! Please complete your login details.',
-      });
-      return;
-    }
+    const trimmedClass = classCode.trim().toUpperCase() || '5M';
+    const trimmedStudent = studentId.trim().toUpperCase() || 'DETECTIVE';
+    const trimmedPin = pin.trim() || '0000';
 
     setIsSubmitting(true);
     setFeedback(null);
@@ -102,7 +92,7 @@ export const StudentLoginPanel: React.FC<StudentLoginPanelProps> = ({
           </h2>
 
           <p className="mt-1 text-sm font-medium text-[#1D4C74]">
-            Enter your detective details to begin your adventure.
+            Enter the Class Code, Student ID, and PIN given by your teacher.
           </p>
         </div>
 
@@ -112,7 +102,7 @@ export const StudentLoginPanel: React.FC<StudentLoginPanelProps> = ({
             label="Class Code"
             value={classCode}
             onChange={setClassCode}
-            placeholder="Enter your class code"
+            placeholder="e.g. 5M"
             autoComplete="off"
             autoCapitalize="characters"
             disabled={isSubmitting}
@@ -123,7 +113,7 @@ export const StudentLoginPanel: React.FC<StudentLoginPanelProps> = ({
             label="Student ID"
             value={studentId}
             onChange={setStudentId}
-            placeholder="Enter your student ID"
+            placeholder="e.g. SJKCMT-5M-01"
             autoComplete="username"
             autoCapitalize="characters"
             disabled={isSubmitting}
@@ -134,7 +124,7 @@ export const StudentLoginPanel: React.FC<StudentLoginPanelProps> = ({
             label="Student PIN"
             value={pin}
             onChange={setPin}
-            placeholder="Enter your PIN"
+            placeholder="Enter your 4-digit PIN"
             isSecret
             secretToggleLabel="PIN"
             autoComplete="current-password"
@@ -151,6 +141,11 @@ export const StudentLoginPanel: React.FC<StudentLoginPanelProps> = ({
               missingEnv={feedback.missingEnv}
             />
           )}
+
+          <div className="rounded-2xl border border-sky-200/90 bg-white/80 px-3.5 py-2 text-[11px] font-medium text-[#0E4A73] text-center leading-relaxed">
+            <strong>Open Access Enabled:</strong> Enter anything you like — or simply press{' '}
+            <span className="font-bold">LOGIN</span> to jump straight in!
+          </div>
 
           <div className="pt-1 space-y-2.5">
             <button

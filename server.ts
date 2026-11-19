@@ -4,7 +4,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer as createViteServer } from 'vite';
 import { createAuthRouter } from './server/authService.ts';
-import { createStudentRouter } from './server/studentStateStore.ts';
+import { createPortalRouter, createStudentRouter } from './server/studentStateStore.ts';
+import { createWritingRouter } from './server/writingEvalService.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +19,8 @@ async function startServer() {
 
   app.use('/api/auth', createAuthRouter());
   app.use('/api/student', createStudentRouter());
+  app.use('/api/portal', createPortalRouter());
+  app.use('/api/writing', createWritingRouter());
 
   if (isProduction) {
     const distPath = path.resolve(__dirname, 'dist');

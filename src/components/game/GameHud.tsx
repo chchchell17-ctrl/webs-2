@@ -144,11 +144,28 @@ export const GameHud: React.FC<GameHudProps> = ({
 
               <div className="relative z-10 hidden sm:flex items-center gap-1.5 text-[11px] font-bold text-[#15803D] border-l border-sky-200 pl-3">
                 <span>
-                  {gameState.completedMissions.length > 0
-                    ? `MISSIONS: ${gameState.completedMissions.length}/7`
-                    : totalBadges > 0
-                      ? `BADGES: ${totalBadges}`
-                      : 'MISSION 01 READY'}
+                  {gameState.unlockedBuildings.includes('game-arcade') ||
+                  gameState.screen07Progress?.gameArcadeUnlocked
+                    ? 'GAME ARCADE READY'
+                    : gameState.unlockedBuildings.includes('advice-centre') ||
+                        gameState.screen06Progress?.adviceCentreUnlocked
+                      ? 'ADVICE CENTRE READY'
+                      : gameState.unlockedBuildings.includes('cyber-cafe') ||
+                          gameState.screen05Progress?.cyberCafeUnlocked
+                        ? 'CYBER CAFÉ READY'
+                        : gameState.unlockedBuildings.includes('ainas-house') ||
+                            gameState.screen04Progress?.ainasHouseUnlocked
+                          ? "AINA'S HOUSE READY"
+                          : gameState.screen03Progress?.redFlagCentreUnlocked ||
+                              gameState.unlockedBuildings.includes('red-flag-centre')
+                            ? 'RED FLAG CENTRE READY'
+                            : gameState.completedMissions.length > 0
+                              ? `MISSIONS: ${gameState.completedMissions.length}/7`
+                              : gameState.screen03Progress?.inductionCompleted
+                                ? 'INDUCTION COMPLETED'
+                                : totalBadges > 0
+                                  ? `BADGES: ${totalBadges}`
+                                  : 'MISSION 01 READY'}
                 </span>
               </div>
             </div>

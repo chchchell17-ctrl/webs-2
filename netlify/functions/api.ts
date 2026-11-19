@@ -1,13 +1,16 @@
 import express from 'express';
 import { Readable } from 'node:stream';
 import { createAuthRouter } from '../../server/authService.ts';
-import { createStudentRouter } from '../../server/studentStateStore.ts';
+import { createPortalRouter, createStudentRouter } from '../../server/studentStateStore.ts';
+import { createWritingRouter } from '../../server/writingEvalService.ts';
 
 // Netlify serverless adapter compatible with AWS Lambda / Netlify Functions v1 events
 const app = express();
 app.set('trust proxy', 1);
 app.use('/api/auth', createAuthRouter());
 app.use('/api/student', createStudentRouter());
+app.use('/api/portal', createPortalRouter());
+app.use('/api/writing', createWritingRouter());
 
 export async function handler(event: {
   httpMethod: string;

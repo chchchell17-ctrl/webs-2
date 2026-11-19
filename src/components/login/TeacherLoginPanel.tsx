@@ -31,23 +31,15 @@ export const TeacherLoginPanel: React.FC<TeacherLoginPanelProps> = ({
     e.preventDefault();
     if (isSubmitting) return;
 
-    const cleanIdentifier = identifier.trim();
-    if (!cleanIdentifier || !password) {
-      playErrorTone();
-      setFeedback({
-        tone: 'error',
-        code: 'EMPTY_FIELDS',
-        message: 'Unable to sign in. Please check your login details and try again.',
-      });
-      return;
-    }
+    const cleanIdentifier = identifier.trim() || 'teacher';
+    const cleanPassword = password.trim() || 'open-access';
 
     setIsSubmitting(true);
     setFeedback(null);
 
     const result = await loginTeacher({
       identifier: cleanIdentifier,
-      password,
+      password: cleanPassword,
     });
 
     setIsSubmitting(false);
@@ -139,7 +131,7 @@ export const TeacherLoginPanel: React.FC<TeacherLoginPanelProps> = ({
 
           <p className="mt-1 text-sm font-medium text-[#1D5439]">
             {mode === 'login'
-              ? 'Sign in to access your Teacher Control Centre.'
+              ? 'Sign in with your school account to open the Teacher Control Centre.'
               : 'Enter your registered email address to receive reset instructions.'}
           </p>
         </div>
@@ -150,7 +142,7 @@ export const TeacherLoginPanel: React.FC<TeacherLoginPanelProps> = ({
               label="Registered Email / Username"
               value={identifier}
               onChange={setIdentifier}
-              placeholder="Enter your registered email or username"
+              placeholder="e.g. chelsea@sjkcmingtao.edu.my"
               autoComplete="username"
               disabled={isSubmitting}
               accentRingClass="focus-visible:ring-emerald-500/60 focus-visible:border-emerald-400"
@@ -176,6 +168,11 @@ export const TeacherLoginPanel: React.FC<TeacherLoginPanelProps> = ({
                 missingEnv={feedback.missingEnv}
               />
             )}
+
+            <div className="rounded-2xl border border-emerald-200/90 bg-white/80 px-3.5 py-2 text-[11px] font-medium text-[#1D5439] text-center leading-relaxed">
+              <strong>Open Access Enabled:</strong> Enter any name/email and password — or just press{' '}
+              <span className="font-bold">LOGIN</span>!
+            </div>
 
             <div className="pt-1 space-y-2.5">
               <button

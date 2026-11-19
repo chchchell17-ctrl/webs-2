@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
-import { fetchCurrentSession, logoutSession } from '../../services/authApi.ts';
+import { fetchCurrentSession, loginStudent, logoutSession } from '../../services/authApi.ts';
 import type { AuthenticatedSession, PortalType } from '../../types/auth.ts';
 import {
   isSoundEnabled,
   playBackClick,
   playHoverTick,
+  playLoginSuccess,
   setSoundEnabled,
 } from '../../utils/soundEffects.ts';
 import { Screen02Experience } from '../game/Screen02Experience.tsx';
+import { ParentDashboard } from '../portals/ParentDashboard.tsx';
+import { TeacherDashboard } from '../portals/TeacherDashboard.tsx';
 import { LoginBackground } from './LoginBackground.tsx';
 import { LoginFooter } from './LoginFooter.tsx';
 import { LoginHeader } from './LoginHeader.tsx';
 import { ParentLoginPanel } from './ParentLoginPanel.tsx';
 import { PortalSelection } from './PortalSelection.tsx';
-import { PostLoginHandoff } from './PostLoginHandoff.tsx';
 import { PusheenMascot } from './PusheenMascot.tsx';
 import { StudentLoginPanel } from './StudentLoginPanel.tsx';
 import { TeacherLoginPanel } from './TeacherLoginPanel.tsx';
@@ -23,17 +25,14 @@ import { TeacherLoginPanel } from './TeacherLoginPanel.tsx';
 export const LoginScreen: React.FC = () => {
   const [activePortal, setActivePortal] = useState<PortalType | null>(null);
   const [session, setSession] = useState<AuthenticatedSession | null>(null);
-  const [welcomeMessage, setWelcomeMessage] = useState('');
   const [soundOn, setSoundOn] = useState<boolean>(() => isSoundEnabled());
+  const [quickStartBusy, setQuickStartBusy] = useState(false);
 
   useEffect(() => {
     let mounted = true;
     fetchCurrentSession().then((existingSession) => {
       if (mounted && existingSession) {
         setSession(existingSession);
-        if (existingSession.role === 'student') {
-          setWelcomeMessage('Welcome back, Detective! Your adventure is waiting!');
-        }
       }
     });
     return () => {
@@ -45,17 +44,31 @@ export const LoginScreen: React.FC = () => {
     setActivePortal(null);
   };
 
-  const handleAuthSuccess = (newSession: AuthenticatedSession, message: string) => {
+  const handleAuthSuccess = (newSession: AuthenticatedSession) => {
     setSession(newSession);
-    setWelcomeMessage(message);
     setActivePortal(null);
+  };
+
+  const handleQuickStart = async () => {
+    if (quickStartBusy) return;
+    setQuickStartBusy(true);
+    const res = await loginStudent({
+      classCode: '5M',
+      studentId: 'DETECTIVE',
+      pin: '0000',
+    });
+    setQuickStartBusy(false);
+    if (res.ok) {
+      playLoginSuccess();
+      setSession(res.session);
+      setActivePortal(null);
+    }
   };
 
   const handleSignOut = async () => {
     playBackClick();
     await logoutSession();
     setSession(null);
-    setWelcomeMessage('');
     setActivePortal(null);
   };
 
@@ -76,7 +89,23 @@ export const LoginScreen: React.FC = () => {
     );
   }
 
-  const isOverlayActive = activePortal !== null || session !== null;
+  if (session?.role === 'teacher') {
+    return (
+      <MotionConfig reducedMotion="user">
+        <TeacherDashboard session={session} onSignOut={handleSignOut} />
+      </MotionConfig>
+    );
+  }
+
+  if (session?.role === 'parent') {
+    return (
+      <MotionConfig reducedMotion="user">
+        <ParentDashboard session={session} onSignOut={handleSignOut} />
+      </MotionConfig>
+    );
+  }
+
+  const isOverlayActive = activePortal !== null;
 
   return (
     <MotionConfig reducedMotion="user">
@@ -108,22 +137,7 @@ export const LoginScreen: React.FC = () => {
           {/* Area C: Three Portal Cards OR Active Login Panel */}
           <main className="flex-1 flex items-center justify-center py-4 sm:py-6">
             <AnimatePresence mode="wait">
-              {session ? (
-                <motion.div
-                  key="handoff"
-                  initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full px-4"
-                >
-                  <PostLoginHandoff
-                    session={session}
-                    welcomeMessage={welcomeMessage}
-                    onSignOut={handleSignOut}
-                  />
-                </motion.div>
-              ) : activePortal === null ? (
+              {activePortal === null ? (
                 <motion.div
                   key="portals"
                   initial={{ opacity: 0, y: 10 }}
@@ -132,7 +146,11 @@ export const LoginScreen: React.FC = () => {
                   transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                   className="w-full"
                 >
-                  <PortalSelection onSelectPortal={setActivePortal} />
+                  <PortalSelection
+                    onSelectPortal={setActivePortal}
+                    onQuickStart={handleQuickStart}
+                    quickStartBusy={quickStartBusy}
+                  />
                 </motion.div>
               ) : (
                 <motion.div
@@ -146,19 +164,19 @@ export const LoginScreen: React.FC = () => {
                   {activePortal === 'student' && (
                     <StudentLoginPanel
                       onBack={handleBackToPortals}
-                      onSuccess={handleAuthSuccess}
+                      onSuccess={(s) => handleAuthSuccess(s)}
                     />
                   )}
                   {activePortal === 'teacher' && (
                     <TeacherLoginPanel
                       onBack={handleBackToPortals}
-                      onSuccess={handleAuthSuccess}
+                      onSuccess={(s) => handleAuthSuccess(s)}
                     />
                   )}
                   {activePortal === 'parent' && (
                     <ParentLoginPanel
                       onBack={handleBackToPortals}
-                      onSuccess={handleAuthSuccess}
+                      onSuccess={(s) => handleAuthSuccess(s)}
                     />
                   )}
                 </motion.div>

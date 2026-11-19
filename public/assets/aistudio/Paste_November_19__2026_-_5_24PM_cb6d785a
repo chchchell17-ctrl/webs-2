@@ -1,0 +1,1476 @@
+# MASTER DEVELOPMENT PROMPT – SCREEN 05
+# DIGITAL DETECTIVE WORLD
+# AINA'S HOUSE – THE MYSTERY OF THE LUCKY MESSAGE
+## SEGMENT 2 · ACTIVITY 2
+
+---
+
+# 1. DEVELOPMENT INSTRUCTIONS
+
+Act as my lead full-stack developer, educational game designer, UI/UX designer and interactive learning experience developer.
+
+Continue developing my existing DIGITAL DETECTIVE WORLD website.
+
+Screens 01, 02, 03 and 04 have already been developed.
+
+Your task is to implement:
+
+SCREEN 05 – AINA'S HOUSE: THE MYSTERY OF THE LUCKY MESSAGE.
+
+This screen continues directly from Screen 04.
+
+IMPORTANT:
+
+- Do not rebuild the website.
+- Do not redesign previous screens.
+- Preserve all existing functionality.
+- Reuse the student's customised avatar.
+- Reuse Detective Pusheen.
+- Reuse the established dialogue system.
+- Reuse the existing game HUD.
+- Reuse the Mission Tracker.
+- Reuse the XP and star system.
+- Reuse the existing database and authentication.
+- Reuse the town navigation and building progression.
+
+Build actual interactive activities.
+
+Do not create static mock-ups.
+
+The student must complete the entire experience independently without teacher guidance.
+
+---
+
+# 2. LEARNING OBJECTIVES
+
+This activity focuses on two important English language skills.
+
+## A. READING
+
+Students should be able to:
+
+- Read a two-or-more-paragraph text about online safety.
+- Identify important information.
+- Identify who received a suspicious message.
+- Identify who sent the message.
+- Identify the prize mentioned.
+- Identify the deadline.
+- Identify personal information requested.
+- Understand what the character did after receiving the message.
+
+The original reading learning target must be preserved:
+
+Students should correctly identify at least FOUR out of FIVE important details.
+
+## B. WRITING
+
+Students should be able to:
+
+- Ask for simple advice.
+- Give simple advice.
+- Respond to simple advice.
+- Use appropriate expressions such as:
+  - What should I do?
+  - Can you help me?
+  - You should...
+  - You shouldn't...
+  - You could...
+  - Thank you. I will...
+
+The student must produce actual written responses.
+
+Do not replace the writing activity with multiple-choice questions.
+
+Maintain the original Year 5 English learning objectives, DSKP alignment and 60-minute lesson structure.
+
+---
+
+# 3. COMPLETE SCREEN 05 USER FLOW
+
+Implement this exact sequence:
+
+1. Student arrives at Aina's House.
+2. Pusheen introduces Aina's House.
+3. Student explores the house layout.
+4. Student identifies Aina's room.
+5. Student knocks on Aina's bedroom door.
+6. Aina welcomes the player and Detective Pusheen.
+7. Aina explains her problem.
+8. Display Aina's suspicious phone message.
+9. Display the comprehension passage beside the phone.
+10. Keep the comprehension passage visible throughout the reading activity.
+11. Student begins a conversation with Aina.
+12. Aina asks five comprehension questions.
+13. Student types written answers.
+14. Incorrect answers trigger the exact retry dialogue.
+15. Correct answers allow progression.
+16. Student completes an advice-writing conversation.
+17. Aina responds to the student's advice.
+18. Save all reading and writing responses.
+19. Complete Activity 2.
+20. Unlock Cyber Café.
+21. Return to Detective Town.
+22. Transition to Screen 06.
+
+---
+
+# PART 1 – ARRIVING AT AINA'S HOUSE
+
+## SCENE 01: THE HOUSE EXTERIOR
+
+After Screen 04, the player arrives at Aina's House.
+
+Use a beautiful 3D cartoon house environment.
+
+Visual characteristics:
+
+- Two-storey house.
+- Pastel pink and lavender roof.
+- White walls.
+- Pink front door.
+- White picket fence.
+- Flower garden.
+- Green lawn.
+- Small trees.
+- Stone pathway.
+- Mailbox.
+- Windows with curtains.
+- Warm sunlight.
+
+Maintain the established colourful Purble Place-inspired environment.
+
+The player's customised avatar walks towards the house.
+
+Detective Pusheen accompanies the player.
+
+### Dialogue
+
+PUSHEEN:
+
+"Here we are, Detective! This is Aina's house."
+
+PLAYER:
+
+"Is Aina the person who needs our help?"
+
+PUSHEEN:
+
+"That's right! She received a rather unusual message, and she isn't sure what to do."
+
+PLAYER:
+
+"Let's find her!"
+
+PUSHEEN:
+
+"Hold on! We need to find the right room first."
+
+---
+
+# PART 2 – INTERACTIVE HOUSE LAYOUT
+
+## SCENE 02: EXPLORE AINA'S HOUSE
+
+IMPORTANT:
+
+When the player enters the house, do not immediately show Aina.
+
+First, display an interactive house layout.
+
+The house must look like a proper 3D cutaway or dollhouse environment.
+
+Students should be able to see different rooms.
+
+## House layout
+
+Include:
+
+1. Living Room.
+2. Kitchen.
+3. Study Room.
+4. Aina's Bedroom.
+
+Each room must be visually distinct.
+
+### LIVING ROOM
+
+Visual:
+- Sofa.
+- Television.
+- Coffee table.
+- Carpet.
+- Family photographs.
+- Windows.
+
+### KITCHEN
+
+Visual:
+- Refrigerator.
+- Dining table.
+- Kitchen cabinets.
+- Chairs.
+- Cooking equipment.
+
+### STUDY ROOM
+
+Visual:
+- Bookshelves.
+- Study desk.
+- Computer.
+- Stationery.
+- Books.
+- Study lamp.
+
+### AINA'S BEDROOM
+
+Visual:
+- Pink and lavender bedroom.
+- Bed.
+- Pillows.
+- Study table.
+- Bookshelf.
+- Wardrobe.
+- Soft toys.
+- Window.
+- Curtains.
+- Phone on the bedside table.
+
+Do not make the correct room excessively obvious.
+
+The student should explore the house and select the appropriate room.
+
+## Interaction
+
+All four room entrances must be clickable.
+
+When the student clicks a room:
+
+- Camera moves towards the selected room.
+- Door animation plays.
+- The student attempts to enter.
+
+If the student selects the wrong room:
+
+Display a RED ERROR SCREEN.
+
+Text:
+
+WRONG ROOM, DETECTIVE!
+
+"Aina isn't here. Let's look for another room!"
+
+Use:
+- Red background overlay.
+- Gentle warning sound.
+- Clear message.
+- Try Again button.
+
+Do not make the screen frightening.
+
+After clicking TRY AGAIN:
+
+Return to the house layout.
+
+Allow the student to select another room.
+
+Do not deduct XP or stars.
+
+## Correct room
+
+When the student selects Aina's Bedroom:
+
+Display:
+
+YOU FOUND AINA'S ROOM!
+
+Pusheen:
+
+"Excellent! I think this is Aina's room. Let's knock first!"
+
+Display a large clickable door.
+
+Button:
+
+KNOCK ON THE DOOR.
+
+When clicked:
+
+- Play a gentle knocking sound.
+- Animate the door.
+- Pause briefly.
+
+Aina's voice:
+
+"Who's there?"
+
+Pusheen:
+
+"It's Detective Pusheen! We've come to help!"
+
+Aina:
+
+"Oh! Come in!"
+
+The bedroom door opens.
+
+The player and Pusheen enter.
+
+---
+
+# PART 3 – MEET AINA
+
+## SCENE 03: AINA'S BEDROOM
+
+Create a beautiful, comfortable bedroom environment.
+
+Aina should be visible inside the room.
+
+Use the established Aina character design from the character reference sheet.
+
+Do not redesign Aina.
+
+Aina should have:
+- Friendly appearance.
+- Worried expression initially.
+- A mobile phone in her hand.
+- Natural character animations.
+
+The player's avatar and Pusheen stand near Aina.
+
+## COMPLETE CONVERSATION
+
+AINA:
+
+"Hi! You must be the detective Pusheen told me about!"
+
+PUSHEEN:
+
+"That's right! We've come to help you."
+
+PLAYER:
+
+"Hello, Aina! What's wrong?"
+
+AINA:
+
+"I received a strange message on my phone. It says I've won a free tablet!"
+
+PLAYER:
+
+"Wow! Did you enter a competition?"
+
+AINA:
+
+"No! That's why I'm confused."
+
+PUSHEEN:
+
+"Hmm... An unexpected prize? That sounds like something we should investigate."
+
+AINA:
+
+"I'm afraid I might lose the prize if I don't click the link quickly."
+
+PLAYER:
+
+"Don't worry, Aina. Let's look at the message together."
+
+AINA:
+
+"Thank you! I hope you can help me."
+
+The phone appears in the centre of the screen.
+
+Transition into the reading investigation.
+
+---
+
+# PART 4 – AINA'S SUSPICIOUS PHONE MESSAGE
+
+## SCENE 04: THE LUCKY MESSAGE
+
+IMPORTANT:
+
+The suspicious message must be presented as an actual mobile phone interface.
+
+Do not simply show a rectangular text box.
+
+The phone should look like a real smartphone.
+
+Include:
+- Phone frame.
+- Screen.
+- Notification icon.
+- Sender details.
+- Message timestamp.
+- Message content.
+- Link.
+- Mobile status bar.
+
+The phone should be large enough for students to read comfortably.
+
+## EXACT MESSAGE CONTENT
+
+SENDER DISPLAY NAME:
+
+LUCKY REWARDS
+
+SENDER IDENTITY:
+
+UNKNOWN SENDER
+
+TIME:
+
+3:45 PM
+
+MESSAGE:
+
+CONGRATULATIONS, AINA!
+
+You have been selected to receive a FREE TABLET!
+
+You are one of our lucky winners.
+
+Tap the link below before 6:00 p.m. today to claim your prize.
+
+To arrange delivery, enter your full name, home address and phone number.
+
+BUTTON:
+
+CLAIM YOUR PRIZE!
+
+IMPORTANT:
+
+The sender's actual identity is not verified.
+
+The displayed name "Lucky Rewards" must not be treated as proof of who sent the message.
+
+The link must be simulated.
+
+Never open an external website.
+
+When inspected, display a safe preview of the unfamiliar destination.
+
+---
+
+# PART 5 – THE READING COMPREHENSION PASSAGE
+
+## SCENE 05: READ AINA'S CASE FILE
+
+This is one of the most important parts of Screen 05.
+
+The comprehension text must remain visible throughout the entire reading and question-answer session.
+
+DO NOT HIDE THE COMPREHENSION PASSAGE WHEN AINA STARTS ASKING QUESTIONS.
+
+DO NOT REPLACE IT WITH A CHAT WINDOW.
+
+DO NOT MAKE STUDENTS RETURN TO A SEPARATE PAGE TO READ AGAIN.
+
+The phone message and comprehension passage must be displayed side by side.
+
+## Desktop layout
+
+LEFT SIDE:
+
+Aina's smartphone showing the suspicious Lucky Rewards message.
+
+RIGHT SIDE:
+
+The complete reading comprehension passage.
+
+Both panels must remain visible while the student answers the questions.
+
+## Mobile layout
+
+Use a responsive two-section interface.
+
+- Phone message displayed in one panel.
+- Comprehension passage displayed in a persistent reading panel.
+- Conversation appears in the remaining area.
+
+The reading passage must never disappear.
+
+On smaller screens, allow the student to scroll within the passage independently.
+
+You may use a persistent expandable reading panel, but do not close or hide the passage while questions are being answered.
+
+The student must always be able to refer to the text.
+
+## USE THIS EXACT READING PASSAGE
+
+TITLE:
+
+THE MYSTERY OF THE LUCKY MESSAGE
+
+PARAGRAPH 1:
+
+After school, Aina was using her phone to look for pictures for her school project. Suddenly, a notification appeared from a sender she did not recognise. The message displayed the name "Lucky Rewards" and said that Aina had won a free tablet. Aina was surprised because she had not entered any competition.
+
+PARAGRAPH 2:
+
+Under the message, there was a link. It told her to claim the prize before 6:00 p.m. that day. The page asked her to provide her full name, home address and phone number so the tablet could be delivered. Aina did not know who had sent the message, and the website address looked unfamiliar. She felt excited but also unsure about what to do.
+
+PARAGRAPH 3:
+
+Instead of clicking the link or replying, Aina stopped and showed the message to her mother. Her mother reminded her not to share personal information with unknown senders. She also advised Aina to ask a trusted adult whenever she received a suspicious message.
+
+IMPORTANT:
+
+Preserve this passage exactly.
+
+Do not shorten it.
+
+Do not replace it with a summary.
+
+Do not remove paragraphs.
+
+Use readable typography and appropriate line spacing.
+
+The student must be able to refer to all three paragraphs throughout the comprehension activity.
+
+---
+
+# PART 6 – INTERACTIVE CONVERSATION WITH AINA
+
+## SCENE 06: LET'S INVESTIGATE TOGETHER
+
+This activity must feel like a real conversation.
+
+Do not display a conventional multiple-choice worksheet.
+
+Aina will ask the student questions based on the reading passage.
+
+The student must type the answers.
+
+The text must remain visible beside the conversation.
+
+## Conversation interface
+
+Display:
+
+- Aina's character portrait.
+- Aina's expressions.
+- A speech bubble.
+- Player's chat bubble.
+- Text input.
+- SEND button.
+- Conversation history.
+
+The student must be able to type a response.
+
+After clicking SEND, validate the answer.
+
+Use an answer key.
+
+Allow minor variations in capitalisation, punctuation and wording.
+
+Do not require exact sentence matching when the meaning is correct.
+
+## QUESTION 1
+
+AINA:
+
+"Let's start with something simple!"
+
+"Who received the message?"
+
+PLAYER EXPECTED ANSWER:
+
+Aina.
+
+Accepted answers:
+- Aina.
+- Aina received the message.
+
+CORRECT RESPONSE:
+
+AINA:
+
+"That's right! I received the message."
+
+INCORRECT RESPONSE:
+
+AINA:
+
+"I don't think so. Read again!"
+
+Keep the question active.
+
+Allow the student to try again.
+
+Do not proceed until the answer is correct.
+
+## QUESTION 2
+
+AINA:
+
+"Who sent the message to me?"
+
+PLAYER EXPECTED ANSWER:
+
+A mystery sender.
+
+Accepted answers:
+- A mystery sender.
+- An unknown sender.
+- Someone unknown.
+- An unknown person.
+- The sender was unknown.
+
+Important:
+
+The message displayed "Lucky Rewards", but the sender's real identity was not verified.
+
+If the student answers only "Lucky Rewards", Aina should respond:
+
+"I don't think so. Read again! That's the name displayed on the message, but do we know who is really behind it?"
+
+Allow another attempt.
+
+CORRECT RESPONSE:
+
+AINA:
+
+"Exactly! We don't know who really sent the message."
+
+## QUESTION 3
+
+AINA:
+
+"What prize did the message promise?"
+
+PLAYER EXPECTED ANSWER:
+
+A free tablet.
+
+Accepted answers:
+- A free tablet.
+- A tablet.
+- A brand-new tablet.
+
+CORRECT RESPONSE:
+
+AINA:
+
+"Yes! It promised me a free tablet."
+
+INCORRECT RESPONSE:
+
+AINA:
+
+"I don't think so. Read again!"
+
+## QUESTION 4
+
+AINA:
+
+"Before what time did I need to claim the prize?"
+
+PLAYER EXPECTED ANSWER:
+
+6:00 p.m.
+
+Accepted answers:
+- 6 p.m.
+- 6:00 p.m.
+- Six o'clock.
+- Six in the evening.
+
+CORRECT RESPONSE:
+
+AINA:
+
+"That's right! The message told me to claim it before 6:00 p.m."
+
+INCORRECT RESPONSE:
+
+AINA:
+
+"I don't think so. Read again!"
+
+## QUESTION 5
+
+AINA:
+
+"What personal information did the message ask me to provide?"
+
+PLAYER EXPECTED ANSWER:
+
+Full name, home address and phone number.
+
+The answer must contain all three details.
+
+Accepted variations:
+- My full name, address and phone number.
+- Full name, home address and telephone number.
+- Name, address and phone number.
+
+CORRECT RESPONSE:
+
+AINA:
+
+"Correct! It asked for my full name, home address and phone number."
+
+INCORRECT RESPONSE:
+
+AINA:
+
+"I don't think so. Read again! Look carefully at the second paragraph."
+
+Allow the student to retry.
+
+---
+
+# PART 7 – COMPREHENSION ACTIVITY RULES
+
+These rules are compulsory.
+
+1. Students must type their answers.
+2. Do not replace the writing interaction with multiple-choice options.
+3. Every question must have an answer key.
+4. Validate answers using normalised text and accepted answer variations.
+5. Ignore capitalisation and unnecessary punctuation.
+6. Accept equivalent expressions when the meaning is correct.
+7. If incorrect, Aina must say exactly:
+
+"I don't think so. Read again!"
+
+8. The student must attempt the same question again.
+9. Do not proceed until the answer is correct.
+10. The comprehension passage must remain visible.
+11. Students may reread the text at any time.
+12. Do not deduct XP or stars for wrong answers.
+13. Save the student's first attempt and final answer separately.
+14. Track the number of attempts.
+15. Provide supportive feedback.
+
+## Progress indicator
+
+Display:
+
+QUESTION 1 OF 5.
+
+Update after each correct response.
+
+At the end:
+
+COMPREHENSION COMPLETED!
+
+LEARNING TARGET:
+
+At least 4 out of 5 important details.
+
+Record first-attempt accuracy separately from final completion accuracy.
+
+The student should be allowed to retry every incorrect response so that the activity remains achievable.
+
+---
+
+# PART 8 – AINA'S RESPONSE AND TRANSITION TO WRITING
+
+## SCENE 07: WHAT SHOULD AINA DO?
+
+After the five comprehension questions are completed, Aina looks worried.
+
+AINA:
+
+"Now I understand the message better."
+
+"But I'm still not sure what I should do."
+
+PLAYER:
+
+"Don't worry, Aina. We can help you."
+
+AINA:
+
+"What should I do with this message?"
+
+PUSHEEN:
+
+"Excellent question! A good detective should know how to ask for advice, give advice and respond politely."
+
+PLAYER:
+
+"So, we need to help Aina with some advice?"
+
+PUSHEEN:
+
+"Exactly! Let's practise together."
+
+Transition into the writing activity.
+
+---
+
+# PART 9 – INTERACTIVE WRITING ACTIVITY
+
+## SCENE 08: HELP AINA WRITE A SAFE CONVERSATION
+
+This activity must support the original Year 5 writing objective.
+
+Students must practise:
+
+1. Asking for advice.
+2. Giving advice.
+3. Responding to advice.
+
+Do not make this a simple multiple-choice activity.
+
+Students must write their own responses.
+
+Create a realistic messaging interface between Aina and the player.
+
+Use a smartphone or chat application interface.
+
+Display:
+
+AINA – ONLINE
+
+The chat should include three stages.
+
+## STAGE 1 – ASKING FOR ADVICE
+
+Explain to the student:
+
+"Sometimes, we need to ask someone for advice when we are unsure what to do."
+
+Prompt:
+
+Help Aina write a message asking a trusted adult for advice.
+
+Student task:
+
+Write a question that Aina can send to her mother.
+
+Example answer:
+
+"I received a strange message. What should I do?"
+
+Other acceptable answers:
+
+- "Can you help me with this message?"
+- "Should I click this link?"
+- "What should I do about this suspicious message?"
+- "Can you give me some advice?"
+
+Provide an optional sentence starter:
+
+"I received a strange message. ______?"
+
+The student must type their response.
+
+After submission, show feedback.
+
+If the response is appropriate:
+
+PUSHEEN:
+
+"Well done! You've written a clear question asking for advice."
+
+If incorrect or incomplete:
+
+PUSHEEN:
+
+"Let's try again! Remember, you're asking someone to help you decide what to do."
+
+Allow another attempt.
+
+## STAGE 2 – GIVING ADVICE
+
+AINA:
+
+"Thank you! But what should I do while waiting for my mother?"
+
+Student task:
+
+Write a message giving Aina advice.
+
+Prompt:
+
+"What advice would you give Aina?"
+
+Example answer:
+
+"You should not click the link. You should ask your mother for help."
+
+Other acceptable responses:
+
+- "You should not reply to the sender."
+- "You should show the message to a trusted adult."
+- "You should not share your personal information."
+- "You should ignore the unfamiliar link and ask your mother."
+
+Encourage students to use:
+
+- You should...
+- You shouldn't...
+- You could...
+
+Provide an optional word bank:
+
+STOP
+ASK
+TELL
+TRUSTED ADULT
+DO NOT CLICK
+PERSONAL INFORMATION
+SUSPICIOUS MESSAGE
+
+The student must type a complete advice sentence.
+
+### Answer validation
+
+A suitable answer should contain:
+
+- At least one appropriate advice expression.
+- An action that helps Aina stay safe.
+
+Examples of valid advice:
+
+"You should ask your mother."
+
+"You shouldn't click the link."
+
+"You should not share your personal information."
+
+Incorrect example:
+
+"Click the link quickly."
+
+Feedback:
+
+"Let's think again, Detective. Would that advice help Aina stay safe?"
+
+Allow another attempt.
+
+## STAGE 3 – RESPONDING TO ADVICE
+
+AINA:
+
+"That makes sense! I think I should ask my mother for help."
+
+Student task:
+
+Help Aina write a polite response to the advice.
+
+Example answer:
+
+"Thank you. I will ask my mother and avoid clicking the link."
+
+Other acceptable responses:
+
+- "Thank you for your advice."
+- "Thanks! I will ask a trusted adult."
+- "Thank you. I won't click the link."
+- "I understand. I will be careful next time."
+
+Encourage expressions such as:
+
+- Thank you.
+- That's a good idea.
+- I will...
+- I understand.
+
+The student must type a response.
+
+If correct:
+
+AINA:
+
+"Thank you for helping me! I feel much better now."
+
+If incorrect:
+
+PUSHEEN:
+
+"Remember, Detective. A good response should show that you understand and appreciate the advice."
+
+Allow another attempt.
+
+---
+
+# PART 10 – COMPLETE ADVICE CONVERSATION
+
+After all three writing stages are completed, display the complete conversation as a chat transcript.
+
+Example:
+
+AINA:
+
+"I received a strange message. What should I do?"
+
+PLAYER:
+
+"You should not click the link. You should ask your mother for help."
+
+AINA:
+
+"Thank you. I will ask my mother and avoid clicking the link."
+
+The actual transcript must use the student's written responses.
+
+Do not replace the student's writing with fixed sample answers.
+
+Allow the student to review their complete conversation.
+
+Provide:
+
+EDIT ANSWERS
+
+CONTINUE
+
+## Writing feedback
+
+Evaluate:
+
+- Appropriate advice-seeking question.
+- Suitable advice expression.
+- Safe recommendation.
+- Polite response.
+- Basic sentence clarity.
+
+Do not require advanced grammar.
+
+Use simple Year 5 English expectations.
+
+Give constructive feedback.
+
+Save all written responses for teacher review through the existing assessment system.
+
+---
+
+# PART 11 – AINA'S THANK YOU
+
+## SCENE 09: THE MYSTERY SOLVED
+
+After the writing activity:
+
+Aina smiles.
+
+AINA:
+
+"Thank you so much for helping me!"
+
+PLAYER:
+
+"You're welcome, Aina!"
+
+AINA:
+
+"I know what to do now. I'll ask my mother for help, and I won't click the unfamiliar link."
+
+PUSHEEN:
+
+"Excellent decision, Aina!"
+
+PLAYER:
+
+"I'm glad we could help!"
+
+PUSHEEN:
+
+"That's what being a good digital detective is all about. We investigate carefully and help others make safe choices."
+
+Display a gentle celebration animation.
+
+Aina gives the player a thank-you card.
+
+Do not display a completed mission badge prematurely if the existing progression system awards it only after the entire lesson.
+
+---
+
+# PART 12 – ACTIVITY COMPLETION
+
+## SCENE 10: CASE CLOSED
+
+Display:
+
+THE MYSTERY OF THE LUCKY MESSAGE
+
+ACTIVITY COMPLETED!
+
+Show:
+
+READING:
+- Five comprehension questions completed.
+- First-attempt reading accuracy.
+- Final comprehension result.
+
+WRITING:
+- Advice-seeking question completed.
+- Advice-giving message completed.
+- Advice response completed.
+
+Display:
+
+"Well done, Detective! You helped Aina understand how to respond safely to a suspicious message."
+
+The completion status must be saved.
+
+---
+
+# PART 13 – UNLOCKING CYBER CAFÉ
+
+Pusheen receives a new notification.
+
+PUSHEEN:
+
+"Detective, we've received another request for help!"
+
+PLAYER:
+
+"Another mystery?"
+
+PUSHEEN:
+
+"Yes! Byte is waiting for us at the Cyber Café."
+
+PLAYER:
+
+"What happened there?"
+
+PUSHEEN:
+
+"Let's visit and find out!"
+
+Display:
+
+NEW LOCATION UNLOCKED!
+
+CYBER CAFÉ
+
+"Another digital investigation awaits!"
+
+Button:
+
+VISIT CYBER CAFÉ.
+
+When clicked:
+
+1. Save comprehension responses.
+2. Save writing responses.
+3. Save activity completion.
+4. Update Mission Tracker.
+5. Unlock Cyber Café.
+6. Return to Detective Town.
+7. Keep the player's customised avatar.
+8. Keep Detective Pusheen.
+9. Transition to Screen 06.
+
+---
+
+# PART 14 – ANSWER VALIDATION AND DATA HANDLING
+
+Use deterministic validation for the five comprehension questions.
+
+Do not rely on an external AI service or invent an AI connection.
+
+Use:
+- Normalised text.
+- Case-insensitive comparison.
+- Punctuation handling.
+- Accepted answer variations.
+- Keyword validation where appropriate.
+
+## Comprehension answer key
+
+QUESTION 1:
+Aina.
+
+QUESTION 2:
+A mystery sender / unknown sender.
+
+QUESTION 3:
+A free tablet.
+
+QUESTION 4:
+6:00 p.m. / six o'clock.
+
+QUESTION 5:
+Full name, home address and phone number.
+
+For Question 2, distinguish the displayed name "Lucky Rewards" from the sender's unknown real identity.
+
+For Question 5, all three personal details are required.
+
+For writing responses, use a structured rubric and appropriate keyword/pattern validation.
+
+Do not reject a meaningful, grammatically acceptable response just because it differs from the sample answer.
+
+Do not require students to reproduce exact sample sentences.
+
+If an answer is inappropriate or incomplete, provide a supportive explanation and allow another attempt.
+
+---
+
+# PART 15 – SAVE AND RESUME
+
+Use the existing Supabase integration.
+
+Inspect the existing database before making changes.
+
+Save:
+
+STUDENT PROGRESS:
+- Entered Aina's House.
+- Explored house layout.
+- Found Aina's room.
+- Entered Aina's room.
+- Read Aina's case file.
+- Completed comprehension.
+- Completed writing.
+- Activity completion.
+- Cyber Café unlocked.
+
+READING RESPONSES:
+- Question number.
+- First answer.
+- Final correct answer.
+- Attempt count.
+- First-attempt accuracy.
+
+WRITING RESPONSES:
+- Advice-seeking question.
+- Advice-giving message.
+- Advice response.
+- Writing feedback.
+- Submission status.
+
+Ensure all records are associated with the authenticated student.
+
+Use the existing Row Level Security policies.
+
+Returning students must be able to resume their progress.
+
+If offline, use local persistence and synchronise when the connection returns.
+
+Do not lose written responses when the student refreshes the website.
+
+---
+
+# PART 16 – RESPONSIVE DESIGN
+
+Support:
+
+- Desktop.
+- Laptop.
+- Tablet.
+- Mobile.
+
+DESKTOP:
+
+- House map with clickable rooms.
+- Bedroom environment.
+- Phone message on the left.
+- Reading passage on the right.
+- Aina conversation below or alongside.
+- Persistent comprehension text.
+
+TABLET:
+
+- Adaptable split-screen reading interface.
+- Touch-friendly house map.
+- Clear conversation panel.
+
+MOBILE:
+
+- Responsive house layout.
+- Tap-to-select rooms.
+- Large readable phone interface.
+- Persistent reading passage.
+- Independent passage scrolling.
+- Chat interface with appropriate keyboard spacing.
+- No horizontal overflow.
+
+CRITICAL:
+
+The comprehension passage must remain available while answering all five questions, including on mobile.
+
+Do not hide the passage when the conversation starts.
+
+---
+
+# PART 17 – ACCEPTANCE TESTING
+
+## House exploration
+
+[ ] Student arrives at Aina's House.
+
+[ ] House exterior loads.
+
+[ ] Interior house layout loads.
+
+[ ] All four rooms are clickable.
+
+[ ] Wrong room triggers red error screen.
+
+[ ] Try Again returns to the layout.
+
+[ ] Aina's Bedroom can be selected.
+
+[ ] Knock animation works.
+
+[ ] Aina responds to the knock.
+
+## Aina conversation
+
+[ ] Aina appears correctly.
+
+[ ] Pusheen appears correctly.
+
+[ ] Dialogue works.
+
+[ ] Character expressions work.
+
+[ ] Phone message appears.
+
+## Reading comprehension
+
+[ ] Phone interface is displayed.
+
+[ ] Suspicious message content is correct.
+
+[ ] Three-paragraph reading passage is displayed.
+
+[ ] Passage remains visible throughout the activity.
+
+[ ] All five questions appear.
+
+[ ] Students can type answers.
+
+[ ] Answer key works.
+
+[ ] Correct answers allow progression.
+
+[ ] Incorrect answers trigger "I don't think so. Read again!"
+
+[ ] Incorrect answers require another attempt.
+
+[ ] First-attempt accuracy is recorded.
+
+[ ] Reading mastery target is calculated.
+
+## Writing
+
+[ ] Advice-seeking task works.
+
+[ ] Advice-giving task works.
+
+[ ] Advice-response task works.
+
+[ ] Student can type all responses.
+
+[ ] Validation works.
+
+[ ] Supportive feedback appears.
+
+[ ] Complete conversation displays actual student responses.
+
+[ ] Written responses are saved.
+
+## Progression
+
+[ ] Activity completion is recorded.
+
+[ ] Cyber Café unlocks.
+
+[ ] Mission Tracker updates.
+
+[ ] Student can return to Detective Town.
+
+[ ] Returning student can resume.
+
+[ ] Transition to Screen 06 works.
+
+## Responsive design
+
+[ ] Desktop works.
+
+[ ] Tablet works.
+
+[ ] Mobile works.
+
+[ ] Reading text remains accessible.
+
+[ ] No overlapping panels.
+
+[ ] No broken buttons.
+
+---
+
+# PART 18 – FINAL DELIVERABLES
+
+Provide:
+
+1. Complete Screen 05.
+2. Aina's House exterior.
+3. Interactive house layout.
+4. Functional room selection.
+5. Wrong-room red feedback screen.
+6. Aina's bedroom environment.
+7. Knock and enter interaction.
+8. Complete Aina conversation.
+9. Functional phone message interface.
+10. Exact three-paragraph reading passage.
+11. Persistent comprehension panel.
+12. Five interactive reading questions.
+13. Complete answer key.
+14. Answer validation and retry system.
+15. Advice-seeking writing activity.
+16. Advice-giving writing activity.
+17. Advice-response writing activity.
+18. Complete interactive chat transcript.
+19. Writing feedback and saved responses.
+20. Activity completion system.
+21. Cyber Café unlock.
+22. Save and resume.
+23. Responsive desktop, tablet and mobile design.
+24. Files created and modified.
+25. Assets used and temporary assets.
+26. Outstanding configuration requirements.
+27. Actual testing results.
+
+Do not claim unimplemented features are working.
+
+Do not invent credentials.
+
+Preserve all previous functionality.
+
+---
+
+# PART 19 – STRICT DEVELOPMENT SCOPE
+
+This task covers ONLY:
+
+SCREEN 05 – AINA'S HOUSE.
+
+Do not implement:
+
+- Cyber Café's ten-message investigation.
+- Byte's full activity.
+- Advice Centre.
+- Game Arcade assessment.
+- Digital Safe Garden passport.
+
+Those belong to later screens.
+
+However, prepare the navigation, dialogue, reading, writing and progress systems so they can be reused.
+
+Do not stop after creating Aina's House visually.
+
+Implement the complete interactive reading and writing activity.
+
+Test all interactions.
+
+Fix errors.
+
+Maintain the working version of the existing website.
+
+FINAL OBJECTIVE:
+
+The student must enter Aina's House, explore the house, find Aina's bedroom, knock on the door, meet Aina, read her suspicious phone message alongside a persistent comprehension passage, answer five questions through a written conversation and complete an interactive advice-writing exchange.
+
+The student must be able to complete the entire activity independently.
+
+END OF SCREEN 05 DEVELOPMENT SPECIFICATION.

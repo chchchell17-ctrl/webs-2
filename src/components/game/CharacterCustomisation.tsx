@@ -131,8 +131,11 @@ export const CharacterCustomisation: React.FC<CharacterCustomisationProps> = ({
     if (isSaving) return;
     setIsSaving(true);
     playSoftSelect();
-    await onConfirmAndContinue(config, nickname.trim());
-    setIsSaving(false);
+    try {
+      await onConfirmAndContinue(config, nickname.trim());
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   if (confirmedStage) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, RotateCcw, Sparkles } from 'lucide-react';
+import { ArrowRight, FastForward, RotateCcw, Sparkles } from 'lucide-react';
 import type {
   AvatarConfig,
   DialogueCharacterId,
@@ -8,6 +8,8 @@ import type {
   GameSettings,
 } from '../../types/game.ts';
 import { playSoftSelect } from '../../utils/soundEffects.ts';
+import { AinaIllustration } from './AinaIllustration.tsx';
+import { ByteIllustration } from './ByteIllustration.tsx';
 import { DetectiveAvatarPortrait } from './DetectiveAvatar.tsx';
 import { PusheenIllustration } from './PusheenIllustration.tsx';
 
@@ -25,6 +27,8 @@ interface DialogueBoxProps {
   onNext?: () => void;
   onChoiceSelect?: (choice: DialogueChoice) => void;
   onReplay?: () => void;
+  onSkipAll?: () => void;
+  skipAllLabel?: string;
 }
 
 const CHARACTER_META: Record<
@@ -82,6 +86,8 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
   onNext,
   onChoiceSelect,
   onReplay,
+  onSkipAll,
+  skipAllLabel = 'Skip Conversation',
 }) => {
   const [revealedCount, setRevealedCount] = useState(text.length);
 
@@ -154,6 +160,10 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
           >
             {speaker === 'pusheen' ? (
               <PusheenIllustration expression={expression} className="w-full h-full" />
+            ) : speaker === 'aina' ? (
+              <AinaIllustration expression={expression} className="w-full h-full" />
+            ) : speaker === 'byte' ? (
+              <ByteIllustration expression={expression} className="w-full h-full" />
             ) : speaker === 'player' && playerAvatar ? (
               <DetectiveAvatarPortrait config={playerAvatar} className="w-full h-full" />
             ) : (
@@ -187,6 +197,22 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                   >
                     <RotateCcw className="h-3 w-3" aria-hidden="true" />
                     <span className="hidden sm:inline">Replay</span>
+                  </button>
+                )}
+
+                {onSkipAll && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playSoftSelect();
+                      onSkipAll();
+                    }}
+                    aria-label={skipAllLabel}
+                    title={skipAllLabel}
+                    className="h-8 px-2.5 rounded-full bg-white/85 hover:bg-white border border-purple-200 text-[11px] font-bold text-[#6D28D9] inline-flex items-center gap-1 cursor-pointer transition-colors"
+                  >
+                    <FastForward className="h-3 w-3" aria-hidden="true" />
+                    <span>{skipAllLabel}</span>
                   </button>
                 )}
               </div>

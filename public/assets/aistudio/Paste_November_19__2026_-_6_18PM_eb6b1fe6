@@ -1,0 +1,1492 @@
+# MASTER DEVELOPMENT PROMPT – SCREEN 06
+# DIGITAL DETECTIVE WORLD
+# CYBER CAFÉ – HELP BYTE INVESTIGATE!
+## SEGMENT 2 · ACTIVITY 3
+
+---
+
+# 1. YOUR ROLE AND DEVELOPMENT RESPONSIBILITY
+
+Act as my lead full-stack developer, educational game designer, UI/UX designer and interactive storytelling developer.
+
+Continue developing my existing DIGITAL DETECTIVE WORLD website.
+
+Screens 01–05 have already been developed.
+
+Your task is to implement SCREEN 06 – CYBER CAFÉ.
+
+This screen continues directly from Screen 05 – Aina's House.
+
+IMPORTANT:
+
+Do not rebuild the website.
+
+Do not redesign previous screens.
+
+Do not remove existing functionality.
+
+Preserve:
+- Existing student authentication.
+- Student's customised avatar.
+- Detective Pusheen.
+- Existing character designs.
+- Game HUD.
+- Dialogue system.
+- XP and star system.
+- Mission Tracker.
+- Detective Bag.
+- Building navigation.
+- Database integration.
+- Save and resume functionality.
+
+Reuse the existing components wherever possible.
+
+Build real interactive activities, not static mock-ups.
+
+This is an independent self-learning experience for Year 5 pupils.
+
+Students must be able to understand instructions, investigate messages, answer questions and complete the entire activity without teacher assistance.
+
+---
+
+# 2. LEARNING OBJECTIVES
+
+This activity focuses on applying online-safety knowledge to different digital communication situations.
+
+Students should be able to:
+
+1. Examine different types of digital messages.
+2. Identify suspicious features in senders, subjects, message bodies, requests and links.
+3. Distinguish between safe, suspicious and uncertain messages.
+4. Understand the consequences of unsafe online actions.
+5. Choose appropriate actions when receiving suspicious messages.
+6. Apply online-safety knowledge independently.
+
+Preserve the original Year 5 English learning objectives and DSKP alignment.
+
+Maintain the original 60-minute lesson structure.
+
+This activity is an application and consolidation activity, not the final independent assessment.
+
+---
+
+# 3. COMPLETE SCREEN 06 USER FLOW
+
+Implement this sequence:
+
+1. Student arrives at Cyber Café.
+2. View the Cyber Café environment.
+3. Meet Byte and Detective Pusheen.
+4. Byte explains the problem.
+5. Student finds an empty seat.
+6. Student selects a computer workstation.
+7. Receive Mission 03 briefing.
+8. Complete ten digital-message investigations.
+9. Inspect clickable message elements.
+10. Receive immediate feedback from Byte.
+11. Complete the correct-action challenge.
+12. Learn the consequences of different decisions.
+13. Complete the three-message classification mini challenge.
+14. Receive the final investigation summary.
+15. Complete Activity 3.
+16. Save progress.
+17. Unlock the next location according to the existing game progression.
+18. Return to Detective Town.
+
+Do not skip any stage.
+
+---
+
+# PART 1 – ENTERING CYBER CAFÉ
+
+## SCENE 01: THE CYBER CAFÉ EXTERIOR
+
+The student arrives at Cyber Café after completing Aina's House.
+
+Create a colourful and attractive 3D Cyber Café.
+
+Visual style:
+
+- Purble Place-inspired.
+- Frutiger Aero.
+- Pastel aqua and purple.
+- Bright glass windows.
+- Colourful signs.
+- Digital decorations.
+- Friendly café atmosphere.
+
+The exterior should include:
+- Cyber Café signboard.
+- Glass entrance.
+- Decorative plants.
+- Computer-themed decorations.
+- Colourful outdoor seating.
+- Large windows showing the interior.
+
+The player's customised avatar walks towards the entrance.
+
+Detective Pusheen follows.
+
+The entrance opens automatically.
+
+---
+
+# PART 2 – CYBER CAFÉ INTERIOR
+
+## SCENE 02: EXPLORE THE CAFÉ
+
+IMPORTANT:
+
+The Cyber Café must have a complete 3D café layout.
+
+Do not immediately display a computer quiz.
+
+Students must first enter and explore the environment.
+
+Include:
+
+### CAFÉ COUNTER
+- Cashier counter.
+- Menu board.
+- Drinks and snacks.
+- Byte's workstation.
+
+### COMPUTER AREA
+- Multiple computer desks.
+- Large monitors.
+- Gaming keyboards.
+- Mouse and headphones.
+- Comfortable chairs.
+- Computer accessories.
+
+### SEATING AREA
+- Empty seats.
+- NPC customers.
+- Bean bags.
+- Small tables.
+
+### DECORATIONS
+- Neon signs.
+- Digital posters.
+- Plants.
+- Café lighting.
+- Wall clocks.
+- Colourful furniture.
+- Gaming decorations.
+
+The café must feel lively and welcoming.
+
+---
+
+# PART 3 – MEET BYTE
+
+## SCENE 03: BYTE WELCOMES THE PLAYER
+
+Byte is the main supporting character for this activity.
+
+Use the established Byte character design.
+
+Do not redesign Byte if an existing character reference is available.
+
+Byte should appear friendly, intelligent and enthusiastic about technology.
+
+Detective Pusheen remains with the player.
+
+### COMPLETE DIALOGUE
+
+BYTE:
+
+"Hey there! Welcome to Cyber Café!"
+
+PLAYER:
+
+"Hello! This place looks amazing!"
+
+BYTE:
+
+"Thanks! I'm Byte, and I spend most of my time exploring the digital world."
+
+PUSHEEN:
+
+"Hello, Byte! We came because we heard you needed some help."
+
+BYTE:
+
+"That's right! I've received several strange digital messages, and I'm not sure which ones I should trust."
+
+PLAYER:
+
+"Strange messages?"
+
+BYTE:
+
+"Yes! Some look perfectly normal, but others contain suspicious details."
+
+PUSHEEN:
+
+"Sounds like another investigation for our Junior Detective!"
+
+BYTE:
+
+"Exactly! But first, you'll need a computer workstation."
+
+PLAYER:
+
+"Where can I sit?"
+
+BYTE:
+
+"Choose any empty seat you like!"
+
+---
+
+# PART 4 – FIND AN EMPTY SEAT
+
+## SCENE 04: CHOOSE YOUR WORKSTATION
+
+Display the complete Cyber Café interior.
+
+Students must locate and select an available computer seat.
+
+IMPORTANT INTERACTION RULE:
+
+ALL EMPTY SEATS MUST BE AVAILABLE TO SELECT.
+
+If an NPC is sitting on a seat:
+- That seat is unavailable.
+- It must look occupied.
+- Clicking it must produce a short feedback message.
+
+Example:
+
+"Oops! Someone is already using this computer. Try another seat!"
+
+Do not make empty seats decorative or non-interactive.
+
+When the student clicks an empty seat:
+
+1. The avatar walks towards the selected desk.
+2. The chair animates.
+3. The student sits down.
+4. The computer monitor turns on.
+5. Pusheen appears beside the workstation.
+6. Byte approaches the computer.
+
+Display:
+
+WORKSTATION CONNECTED!
+
+Button:
+
+START INVESTIGATION.
+
+Save the selected workstation state.
+
+---
+
+# PART 5 – MISSION BRIEFING
+
+## SCENE 05: MISSION 03 – THE DIGITAL MESSAGE FILES
+
+Display a computer mission interface.
+
+MISSION 03:
+
+THE DIGITAL MESSAGE FILES
+
+BYTE:
+
+"I have collected ten different digital messages."
+
+"Some are safe, some are suspicious, and some need closer investigation."
+
+PLAYER:
+
+"So we have to check every message?"
+
+BYTE:
+
+"Exactly! You need to examine the sender, subject, message, requests and links."
+
+PUSHEEN:
+
+"Remember, Detective. Don't rush. Every detail matters!"
+
+Display:
+
+YOUR MISSION:
+
+- Investigate ten digital messages.
+- Inspect important message elements.
+- Identify suspicious details.
+- Understand what to look out for.
+- Choose safe actions.
+- Complete a final mini challenge.
+
+Button:
+
+OPEN MESSAGE FILES.
+
+---
+
+# PART 6 – THE TEN DIGITAL MESSAGE INVESTIGATIONS
+
+## SCENE 06: INVESTIGATE THE MESSAGES
+
+THIS IS THE MAIN ACTIVITY.
+
+Generate ten complete digital-message investigations.
+
+Each investigation must use a suitable digital interface.
+
+Do not use the same generic pop-up ten times.
+
+Adapt the interface to the type of message.
+
+Possible interfaces:
+
+- Email inbox.
+- Smartphone SMS.
+- Game notification.
+- Social media direct message.
+- Computer security alert.
+- Online shopping notification.
+- School communication platform.
+- Gaming platform chat.
+- Mobile application notification.
+- Digital account notification.
+
+## INTERACTIVE MESSAGE REQUIREMENTS
+
+Every investigation must contain these inspectable elements:
+
+1. SENDER.
+2. SUBJECT or MESSAGE TITLE.
+3. MESSAGE BODY.
+4. REQUESTS.
+5. LINKS.
+
+If an element does not contain information, display that it is absent.
+
+Every meaningful element must be clickable.
+
+When the student clicks an element:
+
+- Highlight the selected area.
+- Zoom in or open an inspection panel.
+- Display the relevant information.
+- Byte provides an explanation.
+- Pusheen may provide supportive feedback.
+
+Do not reveal all warning signs immediately.
+
+The student must inspect the message.
+
+Do not make suspicious elements excessively obvious.
+
+The student must learn to distinguish safe, suspicious and uncertain situations.
+
+All links must be simulated.
+
+Never open external links.
+
+---
+
+## INVESTIGATION 01 – THE UNEXPECTED PRIZE
+
+INTERFACE:
+
+Email inbox.
+
+SENDER:
+
+Prize Support
+
+EMAIL:
+
+prize-alert@winfast-rewards.example
+
+SUBJECT:
+
+Congratulations! You Won a Tablet!
+
+MESSAGE:
+
+"Good news! Your account has been selected to receive a FREE tablet.
+
+You must claim your prize before 5:00 p.m. today.
+
+Complete the form to arrange delivery."
+
+REQUEST:
+
+Full name, home address and phone number.
+
+LINK:
+
+CLAIM YOUR PRIZE
+
+Simulated destination:
+
+claim-reward.example/collect
+
+QUESTION:
+
+Which details make this message suspicious?
+
+Expected answer:
+- Unknown sender.
+- Unexpected prize.
+- Urgent deadline.
+- Request for personal information.
+- Unfamiliar link.
+
+BYTE:
+
+"Good investigation! The message promises an unexpected prize and asks for personal information."
+
+"These are warning signs that require us to stop and investigate."
+
+Classification:
+
+SUSPICIOUS.
+
+---
+
+## INVESTIGATION 02 – THE SCHOOL ANNOUNCEMENT
+
+INTERFACE:
+
+School communication platform.
+
+SENDER:
+
+Ms Lee – English Teacher
+
+Verified school account.
+
+SUBJECT:
+
+Friday Reading Club Reminder
+
+MESSAGE:
+
+"Hello students!
+
+Our Friday Reading Club will begin at 2:00 p.m. in the school library.
+
+Please remember to bring your reading book.
+
+You can view the activity schedule through our usual school platform."
+
+REQUEST:
+
+Bring a reading book.
+
+LINK:
+
+Internal school-platform activity schedule.
+
+Simulated destination:
+
+schoolportal.example/reading-club
+
+QUESTION:
+
+Why does this message appear safe?
+
+Expected answer:
+- It comes through the recognised school platform.
+- The sender is a familiar teacher.
+- The message relates to an expected school activity.
+- It does not request private information.
+
+BYTE:
+
+"Well spotted! The message is consistent with a normal school announcement."
+
+"Remember, even familiar-looking messages should be checked if something seems unusual."
+
+Classification:
+
+SAFE.
+
+---
+
+## INVESTIGATION 03 – THE FREE GAME PASSWORD
+
+INTERFACE:
+
+Online gaming chat.
+
+SENDER:
+
+GameBuddy99
+
+SUBJECT:
+
+FREE GAME COINS!
+
+MESSAGE:
+
+"Hey! I can help you get 5,000 free coins.
+
+Just send me your game username and password.
+
+Don't worry. I won't tell anyone!"
+
+REQUEST:
+
+Game username and password.
+
+LINK:
+
+No link attached.
+
+QUESTION:
+
+What is the biggest warning sign?
+
+Expected answer:
+
+The sender is asking for the student's password.
+
+BYTE:
+
+"Exactly! Your password must remain private."
+
+"Never give your password to someone else, even if they promise free game rewards."
+
+Classification:
+
+SUSPICIOUS.
+
+---
+
+## INVESTIGATION 04 – THE UNKNOWN DELIVERY MESSAGE
+
+INTERFACE:
+
+Smartphone SMS.
+
+SENDER:
+
+Unknown Number – +60 XX-XXX XXXX.
+
+SUBJECT:
+
+Delivery Update.
+
+MESSAGE:
+
+"Your parcel is waiting for confirmation.
+
+Please update your delivery details to avoid a delay."
+
+REQUEST:
+
+Home address and identification details.
+
+LINK:
+
+UPDATE DELIVERY
+
+Simulated destination:
+
+track-parcel.example/update
+
+QUESTION:
+
+What should you do before providing any information?
+
+Expected answer:
+
+Do not use the message link. Verify the delivery through the official courier app or website with help from a trusted adult.
+
+BYTE:
+
+"Good thinking! An unexpected delivery message should be checked carefully."
+
+"Never provide personal information through an unfamiliar link."
+
+Classification:
+
+SUSPICIOUS.
+
+---
+
+## INVESTIGATION 05 – THE CLASSROOM REMINDER
+
+INTERFACE:
+
+School learning platform.
+
+SENDER:
+
+Mr Daniel – Class Teacher.
+
+SUBJECT:
+
+Science Project Submission.
+
+MESSAGE:
+
+"Hello everyone!
+
+Please upload your science project by Friday.
+
+You can submit your work through the usual classroom platform.
+
+Remember to include your name on your project."
+
+REQUEST:
+
+Upload schoolwork through the established school platform.
+
+LINK:
+
+Internal classroom submission page.
+
+Simulated destination:
+
+schoolportal.example/classroom/submit
+
+QUESTION:
+
+What makes this message appropriate?
+
+Expected answer:
+
+It is an expected classroom reminder from a recognised teacher using the usual school platform.
+
+BYTE:
+
+"Excellent! This is an ordinary school communication."
+
+"Always check that the message really comes through the platform you normally use."
+
+Classification:
+
+SAFE.
+
+---
+
+## INVESTIGATION 06 – THE FREE GAME GEMS
+
+INTERFACE:
+
+Mobile gaming notification.
+
+SENDER:
+
+SuperGame Bonus Centre.
+
+SUBJECT:
+
+500 FREE GEMS!
+
+MESSAGE:
+
+"Congratulations!
+
+You can receive 500 free gems today.
+
+Only ten minutes left!
+
+Enter your account password now to receive your reward."
+
+REQUEST:
+
+Account password.
+
+LINK:
+
+GET FREE GEMS
+
+Simulated destination:
+
+superbonus.example/reward
+
+QUESTION:
+
+Which detail creates pressure to act quickly?
+
+Expected answer:
+
+The ten-minute countdown and limited-time reward.
+
+BYTE:
+
+"That's right! The countdown creates urgency."
+
+"Some suspicious messages pressure people into acting before thinking carefully."
+
+Classification:
+
+SUSPICIOUS.
+
+---
+
+## INVESTIGATION 07 – THE MESSAGE FROM A FRIEND
+
+INTERFACE:
+
+Social media direct message.
+
+SENDER:
+
+Mia – Classmate.
+
+SUBJECT:
+
+Look at this!
+
+MESSAGE:
+
+"Hey! Is this your picture?
+
+I found something interesting.
+
+Click here and take a look!"
+
+REQUEST:
+
+Open the attached link.
+
+LINK:
+
+VIEW PHOTO
+
+Simulated destination:
+
+short.example/photo
+
+QUESTION:
+
+Why should you check with Mia before opening the link?
+
+Expected answer:
+
+Her account could have been accessed by someone else, or the message might not really have come from her.
+
+BYTE:
+
+"Good thinking! Even a message from a familiar account should be checked if it looks unusual."
+
+"Contact your friend through another trusted method before opening the link."
+
+Classification:
+
+NEED MORE INFORMATION.
+
+---
+
+## INVESTIGATION 08 – THE OFFICIAL APP UPDATE
+
+INTERFACE:
+
+Mobile application notification.
+
+SENDER:
+
+Installed Game Application.
+
+SUBJECT:
+
+New Version Available.
+
+MESSAGE:
+
+"A new version of your game is available.
+
+Visit the official app store on your device to update the application."
+
+REQUEST:
+
+Update the application through the official app store.
+
+LINK:
+
+No external link attached.
+
+QUESTION:
+
+What is the safest way to update the application?
+
+Expected answer:
+
+Use the official app store rather than an unfamiliar download link.
+
+BYTE:
+
+"Exactly! Updating through the official app store is the safer approach."
+
+Classification:
+
+SAFE.
+
+---
+
+## INVESTIGATION 09 – THE ACCOUNT SECURITY ALERT
+
+INTERFACE:
+
+Computer security notification.
+
+SENDER:
+
+Account Security Team.
+
+EMAIL:
+
+security-alert@account-check.example
+
+SUBJECT:
+
+URGENT! Verify Your Account!
+
+MESSAGE:
+
+"We noticed unusual activity on your account.
+
+Your account may be suspended within 15 minutes.
+
+Click below and enter your password and one-time verification code to prevent suspension."
+
+REQUEST:
+
+Password and one-time verification code.
+
+LINK:
+
+VERIFY ACCOUNT
+
+Simulated destination:
+
+account-check.example/verify
+
+QUESTION:
+
+Which information must never be shared with an unknown sender?
+
+Expected answer:
+
+Password and one-time verification code.
+
+BYTE:
+
+"Correct! Passwords and verification codes are private."
+
+"Never share them through an unexpected message."
+
+Classification:
+
+SUSPICIOUS.
+
+---
+
+## INVESTIGATION 10 – THE SECRET CONTEST
+
+INTERFACE:
+
+Social media direct message.
+
+SENDER:
+
+Lucky Contest Official.
+
+SUBJECT:
+
+PRIVATE WINNER ANNOUNCEMENT.
+
+MESSAGE:
+
+"Congratulations!
+
+You have been chosen for a special online contest.
+
+Send us your school name and current location to receive your prize.
+
+Please keep this announcement secret and do not tell your parents."
+
+REQUEST:
+
+School name and current location.
+
+LINK:
+
+No link attached.
+
+QUESTION:
+
+What makes this message particularly concerning?
+
+Expected answer:
+
+It requests private information and tells the child to keep the interaction secret from parents or trusted adults.
+
+BYTE:
+
+"Excellent observation! A message asking children to hide something from trusted adults is a serious warning sign."
+
+"Never share your school or location details with an unknown sender."
+
+Classification:
+
+SUSPICIOUS.
+
+---
+
+# PART 7 – MESSAGE INVESTIGATION INTERACTION
+
+For all ten messages:
+
+1. Display the message in its appropriate interface.
+2. Allow the student to click the sender.
+3. Allow the student to click the subject or title.
+4. Allow the student to inspect the message body.
+5. Allow the student to inspect requests.
+6. Allow the student to inspect links.
+7. Byte explains what the selected element means.
+8. Pusheen provides occasional encouragement.
+9. Display one investigation question.
+10. Student selects or enters the appropriate answer.
+11. Give immediate feedback.
+12. Save the response.
+13. Move to the next investigation.
+
+For the classification response, use three options:
+
+SAFE
+SUSPICIOUS
+NEED MORE INFORMATION
+
+Use these answer keys:
+
+1. Suspicious.
+2. Safe.
+3. Suspicious.
+4. Suspicious.
+5. Safe.
+6. Suspicious.
+7. Need More Information.
+8. Safe.
+9. Suspicious.
+10. Suspicious.
+
+## FEEDBACK RULES
+
+Correct answer:
+
+BYTE:
+
+"Excellent work! You've identified the important detail."
+
+Incorrect answer:
+
+BYTE:
+
+"Not quite! Let's inspect the message again."
+
+PUSHEEN:
+
+"Look carefully at the sender, the request and the message itself."
+
+Allow the student to inspect the message again.
+
+Do not deduct XP or stars.
+
+Do not permanently block the student.
+
+Students must be able to complete all ten investigations.
+
+## PROGRESS TRACKER
+
+Display:
+
+MESSAGE INVESTIGATION: 1/10
+
+Update after each completed case.
+
+The student should be able to see their progress.
+
+Save progress after every completed message.
+
+Allow returning students to resume from their last completed investigation.
+
+---
+
+# PART 8 – PART C: CHOOSE THE CORRECT ACTION
+
+## SCENE 07: WHAT SHOULD YOU DO?
+
+After completing all ten investigations, Byte asks:
+
+"Now that you've investigated ten messages, let's see whether you know how to respond safely!"
+
+Display:
+
+QUESTION:
+
+WHAT SHOULD YOU DO WHEN YOU RECEIVE A SUSPICIOUS MESSAGE?
+
+Provide four interactive options.
+
+OPTION A:
+
+Click the link immediately.
+
+OPTION B:
+
+Give the sender your password.
+
+OPTION C:
+
+Stop and ask a trusted adult.
+
+OPTION D:
+
+Share the message with your friends.
+
+CORRECT ANSWER:
+
+OPTION C.
+
+## Consequence-based feedback
+
+OPTION A – CLICK THE LINK IMMEDIATELY.
+
+Feedback:
+
+"That could take you to an unsafe or unfamiliar website."
+
+"Never rush to open unexpected links."
+
+OPTION B – GIVE THE SENDER YOUR PASSWORD.
+
+Feedback:
+
+"Someone could use your password to access your account."
+
+"Passwords must remain private."
+
+OPTION C – STOP AND ASK A TRUSTED ADULT.
+
+Feedback:
+
+"Excellent choice!"
+
+"An adult you trust can help you check the message and decide what to do safely."
+
+OPTION D – SHARE THE MESSAGE WITH YOUR FRIENDS.
+
+Feedback:
+
+"Sharing a suspicious message may expose other people to the same risk."
+
+"Do not spread messages that have not been checked."
+
+The consequences must appear immediately after the student chooses an option.
+
+Do not reveal the correct answer before the student makes a choice.
+
+Allow students to retry after receiving feedback.
+
+Do not deduct XP.
+
+---
+
+# PART 9 – PART D: THREE-MESSAGE MINI CHALLENGE
+
+## SCENE 08: THE FINAL MESSAGE SORTING GAME
+
+BYTE:
+
+"You're doing great, Detective!"
+
+"But I have three more messages for you."
+
+"Can you decide which ones are safe, suspicious or need more information?"
+
+PUSHEEN:
+
+"Read carefully. Sometimes the answer isn't obvious!"
+
+Display three new message cards.
+
+IMPORTANT:
+
+These must be NEW messages.
+
+Do not reuse the ten earlier investigations.
+
+## MESSAGE A – THE SCHOOL LIBRARY REMINDER
+
+INTERFACE:
+
+School platform notification.
+
+SENDER:
+
+School Librarian.
+
+MESSAGE:
+
+"Reminder: Your reserved library book is ready for collection.
+
+Please collect it from the school library tomorrow."
+
+No personal information requested.
+
+No external link.
+
+Student must classify:
+
+SAFE.
+
+Feedback:
+
+"Correct! This is a normal reminder from a recognised school source."
+
+## MESSAGE B – THE FREE PHONE OFFER
+
+INTERFACE:
+
+Mobile SMS.
+
+SENDER:
+
+Unknown Number.
+
+MESSAGE:
+
+"You have won a brand-new phone!
+
+Click this link and enter your name, address and password to claim it."
+
+Student must classify:
+
+SUSPICIOUS.
+
+Feedback:
+
+"Correct! The message promises an unexpected prize and asks for private information."
+
+## MESSAGE C – THE FRIEND'S UNKNOWN LINK
+
+INTERFACE:
+
+Messaging application.
+
+SENDER:
+
+A saved contact named "Adam".
+
+MESSAGE:
+
+"Hey! Look at this. I found something interesting for you."
+
+An unfamiliar shortened link is attached.
+
+No further explanation is given.
+
+Student must classify:
+
+NEED MORE INFORMATION.
+
+Feedback:
+
+"Excellent! Even if the sender looks familiar, you should check with Adam before opening the unfamiliar link."
+
+## INTERACTION REQUIREMENTS
+
+Display three separate message cards.
+
+Each card has three classification buttons:
+
+SAFE
+SUSPICIOUS
+NEED MORE INFORMATION
+
+Students classify each message individually.
+
+Provide immediate feedback after each response.
+
+Show the correct explanation.
+
+Allow retry.
+
+Display progress:
+
+MESSAGE 1 OF 3
+MESSAGE 2 OF 3
+MESSAGE 3 OF 3
+
+At the end:
+
+3 / 3 MESSAGES CLASSIFIED.
+
+Do not make the final activity unnecessarily complicated.
+
+---
+
+# PART 10 – BYTE'S FINAL CONVERSATION
+
+## SCENE 09: INVESTIGATION COMPLETED
+
+Return to the Cyber Café computer workstation.
+
+Byte looks excited.
+
+BYTE:
+
+"Wow! You've investigated ten messages and completed the final challenge!"
+
+PLAYER:
+
+"I didn't know messages could look so different!"
+
+BYTE:
+
+"That's right! Suspicious messages can appear in emails, games, text messages and social media."
+
+PUSHEEN:
+
+"That's why we need to examine every message carefully."
+
+PLAYER:
+
+"I'll remember to stop and check before clicking!"
+
+BYTE:
+
+"Excellent! You've been a fantastic detective today."
+
+Display:
+
+CYBER CAFÉ INVESTIGATION COMPLETED!
+
+---
+
+# PART 11 – COMPLETION SUMMARY
+
+Display:
+
+THE DIGITAL MESSAGE INVESTIGATION
+
+Show:
+
+- Ten message investigations completed.
+- Sender inspection completed.
+- Subject inspection completed.
+- Message-body inspection completed.
+- Request inspection completed.
+- Link inspection completed.
+- Correct-action challenge completed.
+- Three-message mini challenge completed.
+
+Display the student's actual results.
+
+Do not fabricate scores.
+
+Save all responses.
+
+Award the Byte's Helper badge when the complete activity is successfully completed, using the existing badge system.
+
+Do not create duplicate badges.
+
+---
+
+# PART 12 – NEXT LOCATION
+
+After completion, return to Detective Town.
+
+Save all progress.
+
+Update the Mission Tracker.
+
+Unlock the next location in the existing approved game progression.
+
+Do not skip any existing activity or introduce an unapproved building.
+
+Display a short Pusheen transition conversation.
+
+Prepare the next screen.
+
+---
+
+# PART 13 – DATABASE AND PROGRESS
+
+Reuse the existing Supabase database.
+
+Inspect the current schema.
+
+Save:
+
+- Cyber Café entered.
+- Selected workstation.
+- Ten investigations completed.
+- Elements inspected for each message.
+- Classification answers.
+- First-attempt answers.
+- Final answers.
+- Attempt counts.
+- Correct-action selection.
+- Consequence feedback viewed.
+- Three mini-challenge classifications.
+- Activity completion.
+- Byte's Helper badge status.
+- Next location unlocked.
+
+Associate all records with the authenticated student.
+
+Use appropriate Row Level Security.
+
+Implement local persistence and offline fallback.
+
+Do not lose progress if the student refreshes the website.
+
+---
+
+# PART 14 – RESPONSIVE DESIGN
+
+Desktop:
+- Full Cyber Café environment.
+- Multiple computer workstations.
+- Large message interfaces.
+- Byte dialogue panel.
+
+Tablet:
+- Scalable café layout.
+- Touch-enabled seats.
+- Adaptable message windows.
+
+Mobile:
+- Responsive café layout.
+- Tap-to-select empty seats.
+- Large readable message cards.
+- Scrollable investigation interface.
+- Touch-friendly classification buttons.
+
+Never simply shrink the desktop design.
+
+---
+
+# PART 15 – ACCEPTANCE TESTING
+
+[ ] Cyber Café exterior loads.
+
+[ ] Café interior loads.
+
+[ ] Byte appears correctly.
+
+[ ] Pusheen appears correctly.
+
+[ ] Dialogue works.
+
+[ ] NPC-occupied seats are unavailable.
+
+[ ] Every empty seat is selectable.
+
+[ ] Avatar can sit at the selected computer.
+
+[ ] Mission briefing works.
+
+[ ] All ten messages load.
+
+[ ] Ten interfaces are appropriately varied.
+
+[ ] Sender elements are inspectable.
+
+[ ] Subject elements are inspectable.
+
+[ ] Message bodies are inspectable.
+
+[ ] Requests are inspectable.
+
+[ ] Links are safely inspectable.
+
+[ ] Byte provides immediate feedback.
+
+[ ] All ten answer keys work.
+
+[ ] Incorrect answers can be retried.
+
+[ ] Progress tracker updates.
+
+[ ] Correct-action challenge works.
+
+[ ] Consequences appear for all four choices.
+
+[ ] Three-message mini challenge works.
+
+[ ] Classification answer keys work.
+
+[ ] Byte's Helper badge is awarded correctly.
+
+[ ] Progress saves.
+
+[ ] Returning students can resume.
+
+[ ] Responsive layouts work.
+
+[ ] No external suspicious links open.
+
+[ ] Next location unlocks correctly.
+
+---
+
+# PART 16 – FINAL DELIVERABLES
+
+Provide:
+
+1. Complete Cyber Café environment.
+2. Byte character integration.
+3. Pusheen character integration.
+4. Interactive café layout.
+5. Selectable empty seats.
+6. NPC-occupied seat restrictions.
+7. Functional workstation.
+8. Ten complete digital-message investigations.
+9. Ten varied message interfaces.
+10. Clickable sender, subject, body, requests and links.
+11. Immediate feedback system.
+12. Ten investigation questions and answer keys.
+13. Correct-action challenge.
+14. Four consequence explanations.
+15. Three-message classification mini challenge.
+16. Final completion summary.
+17. Byte's Helper badge.
+18. Database integration.
+19. Save and resume.
+20. Responsive design.
+21. Actual testing results.
+22. Outstanding configuration requirements.
+
+---
+
+# PART 17 – STRICT SCOPE
+
+This task covers ONLY:
+
+SCREEN 06 – CYBER CAFÉ.
+
+Do not implement Advice Centre yet.
+
+Do not implement Game Arcade assessment.
+
+Do not implement Digital Safe Garden.
+
+Do not stop after creating the café environment.
+
+Build the complete ten-message investigation and both challenges.
+
+Test all interactions.
+
+FINAL OBJECTIVE:
+
+The student must enter Cyber Café, meet Byte, find an empty seat, investigate ten different digital messages, inspect their important elements, learn from Byte's feedback, choose the correct action and classify three new messages.
+
+The student must complete the entire experience independently.
+
+END OF SCREEN 06 DEVELOPMENT SPECIFICATION.

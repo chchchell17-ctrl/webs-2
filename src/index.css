@@ -514,6 +514,189 @@
   animation: spotlightHalo 1.7s ease-in-out infinite;
 }
 
+@keyframes flagWave {
+  0%,
+  100% {
+    transform: skewY(0deg) scaleX(1);
+  }
+  50% {
+    transform: skewY(-6deg) scaleX(0.92);
+  }
+}
+
+@keyframes steamRise {
+  0% {
+    transform: translate3d(0, 6px, 0) scale(0.82);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.78;
+  }
+  75% {
+    transform: translate3d(4px, -12px, 0) scale(1.08);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate3d(-2px, -22px, 0) scale(1.22);
+    opacity: 0;
+  }
+}
+
+@keyframes arcadeEyeBlink {
+  0%,
+  42%,
+  46%,
+  88%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  44%,
+  90% {
+    transform: scaleY(0.12);
+  }
+}
+
+@keyframes lanternGlow {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.88;
+  }
+}
+
+@keyframes fireflyDriftA {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+    opacity: 0.25;
+  }
+  35% {
+    transform: translate3d(18px, -16px, 0) scale(1.15);
+    opacity: 0.9;
+  }
+  70% {
+    transform: translate3d(-10px, -28px, 0) scale(0.95);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+    opacity: 0.25;
+  }
+}
+
+@keyframes fireflyDriftB {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.85);
+    opacity: 0.2;
+  }
+  40% {
+    transform: translate3d(-20px, -14px, 0) scale(1.1);
+    opacity: 0.85;
+  }
+  75% {
+    transform: translate3d(12px, -24px, 0) scale(0.92);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.85);
+    opacity: 0.2;
+  }
+}
+
+@keyframes globeOrbitShimmer {
+  0%,
+  100% {
+    transform: rotate(-14deg) scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: rotate(-11deg) scale(1.03);
+    opacity: 0.92;
+  }
+}
+
+@keyframes sproutSway {
+  0%,
+  100% {
+    transform: rotate(-3.5deg);
+  }
+  50% {
+    transform: rotate(3.5deg);
+  }
+}
+
+@keyframes typingPulse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.72;
+  }
+  50% {
+    transform: translate3d(0, -3px, 0);
+    opacity: 1;
+  }
+}
+
+.animate-flag-wave {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: flagWave 2.4s ease-in-out infinite;
+}
+
+.animate-steam-1 {
+  animation: steamRise 3.2s ease-out infinite;
+}
+
+.animate-steam-2 {
+  animation: steamRise 3.2s ease-out 1.4s infinite;
+}
+
+.animate-arcade-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: arcadeEyeBlink 5.6s ease-in-out infinite;
+}
+
+.animate-lantern-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lanternGlow 3.6s ease-in-out infinite;
+}
+
+.animate-firefly-a {
+  animation: fireflyDriftA 7.5s ease-in-out infinite;
+}
+
+.animate-firefly-b {
+  animation: fireflyDriftB 9s ease-in-out 1.2s infinite;
+}
+
+.animate-globe-orbit {
+  animation: globeOrbitShimmer 6.5s ease-in-out infinite;
+}
+
+.animate-sprout-sway {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: sproutSway 4.8s ease-in-out infinite;
+}
+
+.animate-typing-dot-1 {
+  animation: typingPulse 1.6s ease-in-out infinite;
+}
+
+.animate-typing-dot-2 {
+  animation: typingPulse 1.6s ease-in-out 0.25s infinite;
+}
+
+.animate-typing-dot-3 {
+  animation: typingPulse 1.6s ease-in-out 0.5s infinite;
+}
+
 .reduced-motion *,
 .reduced-motion *::before,
 .reduced-motion *::after {
@@ -546,6 +729,18 @@
   .animate-fish-right,
   .animate-fish-left,
   .animate-stream-shimmer,
+  .animate-flag-wave,
+  .animate-steam-1,
+  .animate-steam-2,
+  .animate-arcade-blink,
+  .animate-lantern-glow,
+  .animate-firefly-a,
+  .animate-firefly-b,
+  .animate-globe-orbit,
+  .animate-sprout-sway,
+  .animate-typing-dot-1,
+  .animate-typing-dot-2,
+  .animate-typing-dot-3,
   .tutorial-spotlight-ring {
     animation: none !important;
   }

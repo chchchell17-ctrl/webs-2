@@ -31,23 +31,15 @@ export const ParentLoginPanel: React.FC<ParentLoginPanelProps> = ({
     e.preventDefault();
     if (isSubmitting) return;
 
-    const cleanEmail = email.trim();
-    if (!cleanEmail || !password) {
-      playErrorTone();
-      setFeedback({
-        tone: 'error',
-        code: 'EMPTY_FIELDS',
-        message: 'Unable to sign in. Please check your login details and try again.',
-      });
-      return;
-    }
+    const cleanEmail = email.trim() || 'parent@sjkcmingtao.edu.my';
+    const cleanPassword = password.trim() || 'open-access';
 
     setIsSubmitting(true);
     setFeedback(null);
 
     const result = await loginParent({
       email: cleanEmail,
-      password,
+      password: cleanPassword,
     });
 
     setIsSubmitting(false);
@@ -139,7 +131,7 @@ export const ParentLoginPanel: React.FC<ParentLoginPanelProps> = ({
 
           <p className="mt-1 text-sm font-medium text-[#47306F]">
             {mode === 'login'
-              ? "Sign in to follow your child's Digital Detective journey."
+              ? "Sign in with your parent account to view your child's progress."
               : 'Enter your registered email address to receive reset instructions.'}
           </p>
         </div>
@@ -151,7 +143,7 @@ export const ParentLoginPanel: React.FC<ParentLoginPanelProps> = ({
               type="email"
               value={email}
               onChange={setEmail}
-              placeholder="Enter your registered email"
+              placeholder="e.g. parent@sjkcmingtao.edu.my"
               autoComplete="email"
               disabled={isSubmitting}
               accentRingClass="focus-visible:ring-purple-500/60 focus-visible:border-purple-400"
@@ -177,6 +169,11 @@ export const ParentLoginPanel: React.FC<ParentLoginPanelProps> = ({
                 missingEnv={feedback.missingEnv}
               />
             )}
+
+            <div className="rounded-2xl border border-purple-200/90 bg-white/80 px-3.5 py-2 text-[11px] font-medium text-[#47306F] text-center leading-relaxed">
+              <strong>Open Access Enabled:</strong> Enter any email/name and password — or just press{' '}
+              <span className="font-bold">LOGIN</span>!
+            </div>
 
             <div className="pt-1 space-y-2.5">
               <button
@@ -268,7 +265,7 @@ export const ParentLoginPanel: React.FC<ParentLoginPanelProps> = ({
                   setMode('login');
                 }}
                 disabled={isSubmitting}
-                className="w-full min-h-[44px] rounded-full bg-white/75 hover:bg-white/95 border border-white px-5 py-2 text-xs font-bold tracking-wide text-[#10375C] transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-500/50 cursor-pointer flex items-center justify-center gap-1.5"
+                className="w-full min-h-[44px] rounded-full bg-white/75 hover:bg-white/95 border border-white px-5 py-2 text-xs font-bold tracking-wide text-[#10375C] transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/50 cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>BACK TO PARENT LOGIN</span>

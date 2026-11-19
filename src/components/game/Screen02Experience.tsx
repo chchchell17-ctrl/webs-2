@@ -3,9 +3,12 @@ import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
+  Coffee,
   Compass,
   DoorOpen,
   Edit3,
+  Flag,
+  Home,
   RotateCcw,
   ShieldCheck,
   Sparkles,
@@ -53,7 +56,19 @@ import { DetectiveAvatar } from './DetectiveAvatar.tsx';
 import { DialogueBox } from './DialogueBox.tsx';
 import { GameHud, type HudModalType, type SpotlightTarget } from './GameHud.tsx';
 import { HudModals } from './HudModals.tsx';
+import {
+  type LoadingAccent,
+  LocationLoadingScreen,
+} from './LocationLoadingScreen.tsx';
 import { PusheenIllustration } from './PusheenIllustration.tsx';
+import { DetectiveHQScreen } from '../screen03/DetectiveHQScreen.tsx';
+import { RedFlagCentreScreen } from '../screen04/RedFlagCentreScreen.tsx';
+import { AinasHouseScreen } from '../screen05/AinasHouseScreen.tsx';
+import { INVESTIGATION_VIDEO_SRC } from '../../data/screen03Data.ts';
+import hqInteriorBg from '../../assets/images/detective_hq_interior_1795078104682.jpg';
+import redFlagLabBg from '../../assets/images/red_flag_centre_lab_1795080504192.jpg';
+import ainaHouseExtBg from '../../assets/images/aina_house_exterior_1795080504183.jpg';
+import ainaBedroomBg from '../../assets/images/aina_bedroom_interior_1795080505554.jpg';
 import {
   type CameraFocus,
   TownEnvironment,
@@ -81,8 +96,14 @@ type Screen02Stage =
   | 'tut-hq'
   | 'tut-complete'
   | 'hq-entrance'
+  | 'red-flag-walk'
+  | 'aina-walk'
+  | 'cafe-walk'
   | 'town-free'
-  | 'screen-03-handoff';
+  | 'screen-03-handoff'
+  | 'screen-04-handoff'
+  | 'screen-05-handoff'
+  | 'screen-06-handoff';
 
 const CINEMATIC_SHOTS: Array<{
   focus: CameraFocus;
@@ -199,7 +220,7 @@ const TUT_MOVEMENT_INTRO_SCRIPT: DialogueStep[] = [
     speaker: 'pusheen',
     speakerName: 'Detective Pusheen',
     expression: 'encouraging',
-    text: 'Simply click or tap a place on the pathway, and your character will walk towards it!',
+    text: 'Click or tap any pathway, or use WASD / Arrow keys to walk smoothly around Detective Town!',
   },
 ];
 
@@ -288,6 +309,81 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
   const [hqDoorOpen, setHqDoorOpen] = useState(false);
   const [entranceFading, setEntranceFading] = useState(false);
 
+  // Building Walk & Entrance animation states (Red Flag Centre, Aina's House, Cyber Café)
+  const [redFlagIlluminated, setRedFlagIlluminated] = useState(false);
+  const [redFlagDoorOpen, setRedFlagDoorOpen] = useState(false);
+  const [ainaIlluminated, setAinaIlluminated] = useState(false);
+  const [ainaDoorOpen, setAinaDoorOpen] = useState(false);
+  const [cafeIlluminated, setCafeIlluminated] = useState(false);
+  const [cafeDoorOpen, setCafeDoorOpen] = useState(false);
+  const [scriptedWalkToNode, setScriptedWalkToNode] = useState<{
+    nodeId: string;
+    key: number;
+  } | null>(null);
+  const walkTimersRef = useRef<number[]>([]);
+
+  // Location Transition Loading Overlay (buffering circle + 0%-100%)
+  const [pendingPlaceLoad, setPendingPlaceLoad] = useState<{
+    destinationName: string;
+    subtitle: string;
+    accent: LoadingAccent;
+    targetStage: Screen02Stage;
+    preloadImages?: string[];
+    preloadVideo?: string;
+  } | null>(null);
+
+  const navigateWithLoading = useCallback(
+    (targetStage: Screen02Stage) => {
+      if (targetStage === 'screen-03-handoff') {
+        setPendingPlaceLoad({
+          destinationName: 'DETECTIVE HQ',
+          subtitle: 'Opening HQ briefing room & case evidence monitor...',
+          accent: 'purple',
+          targetStage,
+          preloadImages: [hqInteriorBg],
+          preloadVideo: INVESTIGATION_VIDEO_SRC,
+        });
+        return;
+      }
+      if (targetStage === 'screen-04-handoff') {
+        setPendingPlaceLoad({
+          destinationName: 'RED FLAG CENTRE',
+          subtitle: 'Opening bright Red Flag investigation laboratory...',
+          accent: 'rose',
+          targetStage,
+          preloadImages: [redFlagLabBg],
+        });
+        return;
+      }
+      if (targetStage === 'screen-05-handoff') {
+        setPendingPlaceLoad({
+          destinationName: "AINA'S HOUSE",
+          subtitle: 'Stepping up to Aina’s cozy purple storybook home...',
+          accent: 'pink',
+          targetStage,
+          preloadImages: [ainaHouseExtBg, ainaBedroomBg],
+        });
+        return;
+      }
+      if (targetStage === 'screen-06-handoff') {
+        setPendingPlaceLoad({
+          destinationName: 'CYBER CAFÉ',
+          subtitle: 'Unlocking Cyber Café · Screen 06 handoff...',
+          accent: 'amber',
+          targetStage,
+        });
+        return;
+      }
+      setPendingPlaceLoad({
+        destinationName: 'DETECTIVE TOWN',
+        subtitle: 'Loading Detective Town pathways & landmarks...',
+        accent: 'sky',
+        targetStage,
+      });
+    },
+    []
+  );
+
   // Optional browser-saved custom animated map (.gif / .mp4)
   const [customMapMedia, setCustomMapMedia] = useState<CustomMapMedia | null>(null);
   const customMapUrlRef = useRef<string | null>(null);
@@ -349,7 +445,10 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
     [session]
   );
 
-  // Sync fresher server state on mount if available
+  // Sync fresher server state once on mount if available
+  const stageRef = useRef<Screen02Stage>(stage);
+  stageRef.current = stage;
+
   useEffect(() => {
     let mounted = true;
     fetchStudentStateFromServer().then((res) => {
@@ -357,7 +456,12 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
       if (res.state.updatedAt > gameStateRef.current.updatedAt) {
         setGameState(res.state);
         gameStateRef.current = res.state;
-        if (res.state.avatarConfig && stage === 'customisation' && !isEditingExistingCharacter) {
+        if (
+          res.state.avatarConfig &&
+          stageRef.current === 'customisation' &&
+          !isEditingExistingCharacter &&
+          !gameStateRef.current.tutorialProgress.characterConfirmed
+        ) {
           setStage('returning-welcome');
         }
       }
@@ -365,7 +469,7 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
     return () => {
       mounted = false;
     };
-  }, [stage, isEditingExistingCharacter]);
+  }, [isEditingExistingCharacter]);
 
   // Re-sync offline saved changes automatically when connectivity returns
   useEffect(() => {
@@ -452,8 +556,8 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
         lastScene: 'screen-03-handoff',
       };
       persistState(next);
-      setStage('screen-03-handoff');
       setEntranceFading(false);
+      navigateWithLoading('screen-03-handoff');
     }, 2950);
 
     return () => {
@@ -462,7 +566,7 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
       window.clearTimeout(t3);
       window.clearTimeout(t4);
     };
-  }, [stage, persistState]);
+  }, [stage, persistState, navigateWithLoading]);
 
   const handleConfirmCharacter = async (config: AvatarConfig, nickname: string) => {
     const nextState: StudentGameState = {
@@ -474,18 +578,21 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
         characterConfirmed: true,
       },
       lastScene: isEditingExistingCharacter ? 'town' : 'cinematic',
+      updatedAt: Date.now(),
     };
-    await persistState(nextState);
+    setGameState(nextState);
+    gameStateRef.current = nextState;
+    void persistState(nextState);
 
     if (isEditingExistingCharacter) {
       setIsEditingExistingCharacter(false);
-      setStage('town-free');
+      navigateWithLoading('town-free');
       return;
     }
 
     setCinematicShotIdx(0);
     setArrivalLineIdx(0);
-    setStage('cinematic');
+    navigateWithLoading('cinematic');
   };
 
   const handleUpdateSettings = (patch: Partial<GameSettings>) => {
@@ -621,8 +728,131 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
     }
   };
 
+  const clearWalkTimers = useCallback(() => {
+    walkTimersRef.current.forEach((id) => window.clearTimeout(id));
+    walkTimersRef.current = [];
+  }, []);
+
+  useEffect(() => {
+    return () => clearWalkTimers();
+  }, [clearWalkTimers]);
+
+  const startWalkTransition = useCallback(
+    (
+      target: 'red-flag' | 'aina' | 'cafe',
+      sourceState: StudentGameState,
+      startNodeId?: string
+    ) => {
+      clearWalkTimers();
+      setActiveModal(null);
+      setSelectedBuilding(null);
+      setRedFlagIlluminated(target === 'red-flag');
+      setRedFlagDoorOpen(false);
+      setAinaIlluminated(target === 'aina');
+      setAinaDoorOpen(false);
+      setCafeIlluminated(target === 'cafe');
+      setCafeDoorOpen(false);
+      setEntranceFading(false);
+
+      const originNode = startNodeId ? TOWN_PATH_NODES[startNodeId] : undefined;
+      const positionedState: StudentGameState = originNode
+        ? {
+            ...sourceState,
+            lastPosition: { x: originNode.x, y: originNode.y, nodeId: originNode.id },
+          }
+        : sourceState;
+
+      setGameState(positionedState);
+      gameStateRef.current = positionedState;
+      void persistState(positionedState);
+
+      if (target === 'red-flag') {
+        setStage('red-flag-walk');
+        setScriptedWalkToNode({ nodeId: 'red-flag-door', key: Date.now() });
+      } else if (target === 'aina') {
+        setStage('aina-walk');
+        setScriptedWalkToNode({ nodeId: 'aina-door', key: Date.now() });
+      } else {
+        setStage('cafe-walk');
+        setScriptedWalkToNode({ nodeId: 'cafe-door', key: Date.now() });
+      }
+    },
+    [clearWalkTimers, persistState]
+  );
+
+  const handleScriptedWalkArrived = useCallback(() => {
+    if (stage !== 'red-flag-walk' && stage !== 'aina-walk' && stage !== 'cafe-walk') return;
+    clearWalkTimers();
+    setScriptedWalkToNode(null);
+    playPortalOpen();
+
+    if (stage === 'red-flag-walk') setRedFlagDoorOpen(true);
+    if (stage === 'aina-walk') setAinaDoorOpen(true);
+    if (stage === 'cafe-walk') setCafeDoorOpen(true);
+
+    const fast = gameStateRef.current.settings.reducedMotion;
+    const t1 = window.setTimeout(() => {
+      setEntranceFading(true);
+    }, fast ? 220 : 800);
+
+    const doorNodeId =
+      stage === 'red-flag-walk'
+        ? 'red-flag-door'
+        : stage === 'aina-walk'
+          ? 'aina-door'
+          : 'cafe-door';
+
+    const targetScreen: Screen02Stage =
+      stage === 'red-flag-walk'
+        ? 'screen-04-handoff'
+        : stage === 'aina-walk'
+          ? 'screen-05-handoff'
+          : 'screen-06-handoff';
+
+    const t2 = window.setTimeout(() => {
+      const doorNode = TOWN_PATH_NODES[doorNodeId];
+      const next: StudentGameState = {
+        ...gameStateRef.current,
+        lastPosition: { x: doorNode.x, y: doorNode.y, nodeId: doorNodeId },
+        lastScene: targetScreen,
+      };
+      void persistState(next);
+      setEntranceFading(false);
+      setRedFlagIlluminated(false);
+      setRedFlagDoorOpen(false);
+      setAinaIlluminated(false);
+      setAinaDoorOpen(false);
+      setCafeIlluminated(false);
+      setCafeDoorOpen(false);
+      navigateWithLoading(targetScreen);
+    }, fast ? 450 : 1450);
+
+    walkTimersRef.current = [t1, t2];
+  }, [stage, clearWalkTimers, persistState, navigateWithLoading]);
+
   const handleEnterBuilding = (building: BuildingDefinition) => {
     setSelectedBuilding(null);
+    if (building.id === 'red-flag-centre') {
+      if (gameStateRef.current.unlockedBuildings.includes('red-flag-centre')) {
+        startWalkTransition('red-flag', gameStateRef.current);
+      }
+      return;
+    }
+
+    if (building.id === 'ainas-house') {
+      if (gameStateRef.current.unlockedBuildings.includes('ainas-house')) {
+        startWalkTransition('aina', gameStateRef.current);
+      }
+      return;
+    }
+
+    if (building.id === 'cyber-cafe') {
+      if (gameStateRef.current.unlockedBuildings.includes('cyber-cafe')) {
+        startWalkTransition('cafe', gameStateRef.current);
+      }
+      return;
+    }
+
     if (building.id !== 'detective-hq') return;
 
     if (stage === 'tut-hq') {
@@ -648,11 +878,25 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
     setStage('hq-entrance');
   };
 
+  const movePersistTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (movePersistTimerRef.current !== null) {
+        window.clearTimeout(movePersistTimerRef.current);
+      }
+    };
+  }, []);
+
   const handlePositionChange = (nextPos: AvatarPosition) => {
-    setGameState((prev) => ({
-      ...prev,
-      lastPosition: nextPos,
-    }));
+    setGameState((prev) => {
+      const next = {
+        ...prev,
+        lastPosition: nextPos,
+      };
+      gameStateRef.current = next;
+      return next;
+    });
   };
 
   const handleMovementCompleted = () => {
@@ -664,10 +908,18 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
         movementCompleted: true,
       },
     };
-    persistState(next);
+    setGameState(next);
+    gameStateRef.current = next;
     if (stage === 'tut-movement') {
       setMovementSucceeded(true);
     }
+    if (movePersistTimerRef.current !== null) {
+      window.clearTimeout(movePersistTimerRef.current);
+    }
+    movePersistTimerRef.current = window.setTimeout(() => {
+      movePersistTimerRef.current = null;
+      persistState(gameStateRef.current);
+    }, 350);
   };
 
   const spotlightTarget: SpotlightTarget =
@@ -687,7 +939,10 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
     stage !== 'customisation' &&
     stage !== 'cinematic' &&
     stage !== 'welcome-dialogue' &&
-    stage !== 'screen-03-handoff';
+    stage !== 'screen-03-handoff' &&
+    stage !== 'screen-04-handoff' &&
+    stage !== 'screen-05-handoff' &&
+    stage !== 'screen-06-handoff';
 
   const cameraFocus: CameraFocus =
     stage === 'cinematic'
@@ -698,7 +953,13 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
         ? 'plaza'
         : stage === 'tut-hq' || stage === 'hq-entrance'
           ? 'hq'
-          : 'town';
+          : stage === 'red-flag-walk'
+            ? 'red-flag'
+            : stage === 'aina-walk'
+              ? 'aina'
+              : stage === 'cafe-walk'
+                ? 'cafe'
+                : 'town';
 
   const townPusheenState: TownPusheenState =
     stage === 'cinematic' || stage === 'customisation'
@@ -714,6 +975,24 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
   const currentBagStep = TUT_BAG_INTRO_SCRIPT[tutSubIdx];
   const currentMovementStep = TUT_MOVEMENT_INTRO_SCRIPT[tutSubIdx];
   const currentCompleteStep = TUT_COMPLETE_SCRIPT[tutSubIdx];
+
+  // LOCATION LOADING OVERLAY (Must precede all stage renders including customisation)
+  if (pendingPlaceLoad) {
+    return (
+      <LocationLoadingScreen
+        destinationName={pendingPlaceLoad.destinationName}
+        subtitle={pendingPlaceLoad.subtitle}
+        accent={pendingPlaceLoad.accent}
+        reducedMotion={gameState.settings.reducedMotion}
+        preloadImages={pendingPlaceLoad.preloadImages}
+        preloadVideo={pendingPlaceLoad.preloadVideo}
+        onComplete={() => {
+          setStage(pendingPlaceLoad.targetStage);
+          setPendingPlaceLoad(null);
+        }}
+      />
+    );
+  }
 
   // SCENE 01: Character Customisation
   if (stage === 'customisation' || !avatarConfig) {
@@ -762,11 +1041,95 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
     );
   }
 
-  // SCREEN 03 HANDOFF VIEW (Part 13 & Part 20 Scope Boundary)
+  // SCREEN 03: DETECTIVE HQ – SEGMENT 1, ACTIVITY 1, INDUCTION SET
   if (stage === 'screen-03-handoff') {
     return (
+      <DetectiveHQScreen
+        gameState={gameState}
+        saveStatus={saveStatus}
+        customMapMedia={customMapMedia}
+        onUploadCustomMap={handleUploadCustomMap}
+        onResetCustomMap={handleResetCustomMap}
+        onUpdateSettings={handleUpdateSettings}
+        onPersistState={persistState}
+        onReturnToTown={() => {
+          void persistState({ ...gameStateRef.current, lastScene: 'town' });
+          navigateWithLoading('town-free');
+        }}
+        onContinueToRedFlagCentre={(latestState) => {
+          startWalkTransition('red-flag', latestState, 'hq-door');
+        }}
+        onEditCharacter={() => {
+          setIsEditingExistingCharacter(true);
+          setStage('customisation');
+        }}
+        onReplayTutorial={handleReplayTutorial}
+        onSignOut={onSignOut}
+      />
+    );
+  }
+
+  // SCREEN 04: RED FLAG CENTRE – SPOT THE WARNING SIGNS! (SEGMENT 2, ACTIVITY 1)
+  if (stage === 'screen-04-handoff') {
+    return (
+      <RedFlagCentreScreen
+        gameState={gameState}
+        saveStatus={saveStatus}
+        customMapMedia={customMapMedia}
+        onUploadCustomMap={handleUploadCustomMap}
+        onResetCustomMap={handleResetCustomMap}
+        onUpdateSettings={handleUpdateSettings}
+        onPersistState={persistState}
+        onReturnToTown={() => {
+          void persistState({ ...gameStateRef.current, lastScene: 'town' });
+          navigateWithLoading('town-free');
+        }}
+        onContinueToAinasHouse={(latestState) => {
+          startWalkTransition('aina', latestState, 'red-flag-door');
+        }}
+        onEditCharacter={() => {
+          setIsEditingExistingCharacter(true);
+          setStage('customisation');
+        }}
+        onReplayTutorial={handleReplayTutorial}
+        onSignOut={onSignOut}
+      />
+    );
+  }
+
+  // SCREEN 05: AINA'S HOUSE – THE MYSTERY OF THE LUCKY MESSAGE (SEGMENT 2, ACTIVITY 2)
+  if (stage === 'screen-05-handoff') {
+    return (
+      <AinasHouseScreen
+        gameState={gameState}
+        saveStatus={saveStatus}
+        customMapMedia={customMapMedia}
+        onUploadCustomMap={handleUploadCustomMap}
+        onResetCustomMap={handleResetCustomMap}
+        onUpdateSettings={handleUpdateSettings}
+        onPersistState={persistState}
+        onReturnToTown={() => {
+          void persistState({ ...gameStateRef.current, lastScene: 'town' });
+          navigateWithLoading('town-free');
+        }}
+        onContinueToCyberCafe={(latestState) => {
+          startWalkTransition('cafe', latestState, 'aina-door');
+        }}
+        onEditCharacter={() => {
+          setIsEditingExistingCharacter(true);
+          setStage('customisation');
+        }}
+        onReplayTutorial={handleReplayTutorial}
+        onSignOut={onSignOut}
+      />
+    );
+  }
+
+  // SCREEN 06 HANDOFF VIEW: CYBER CAFÉ READY (Strictly Scoped Boundary)
+  if (stage === 'screen-06-handoff') {
+    return (
       <div
-        className={`min-h-dvh w-full flex flex-col bg-gradient-to-b from-[#4EBDF2] via-[#A9E4FA] to-[#DCF5FF] ${
+        className={`min-h-dvh w-full flex flex-col bg-gradient-to-b from-[#4EBDF2] via-[#FDE68A] to-[#FFFBEB] ${
           gameState.settings.reducedMotion ? 'reduced-motion' : ''
         }`}
       >
@@ -782,25 +1145,26 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
           <div
             style={{
               background:
-                'linear-gradient(155deg, rgba(255,255,255,0.95) 0%, rgba(232,248,255,0.92) 55%, rgba(237,233,254,0.92) 100%)',
+                'linear-gradient(155deg, rgba(255,255,255,0.96) 0%, rgba(254,243,199,0.94) 55%, rgba(232,248,255,0.94) 100%)',
             }}
             className="aero-glass-card w-full max-w-2xl rounded-[32px] border border-white p-6 sm:p-8 text-center space-y-5 shadow-[0_24px_60px_-10px_rgba(16,55,92,0.3)]"
           >
             <div className="relative z-10 space-y-4">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-purple-100 border border-purple-200 px-4 py-1 text-xs font-extrabold tracking-widest uppercase text-[#6D28D9]">
-                <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-                <span>DETECTIVE HQ · SCREEN 03 READY</span>
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 border border-amber-300 px-4 py-1 text-xs font-extrabold tracking-widest uppercase text-[#B45309]">
+                <Coffee className="h-4 w-4" aria-hidden="true" />
+                <span>CYBER CAFÉ · SCREEN 06 READY</span>
               </div>
 
               <div className="space-y-1">
                 <p className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-[#0284C7]">
-                  MISSION 01
+                  SEGMENT 2 · NEXT STOP UNLOCKED
                 </p>
                 <h1 className="font-[var(--font-display)] text-2xl sm:text-3xl font-bold text-[#0E3558] casper-sub-halo">
-                  THE MYSTERY OF THE UNEXPECTED PRIZE
+                  WELCOME TO THE CYBER CAFÉ
                 </h1>
                 <p className="text-sm sm:text-base font-semibold text-[#18466E]">
-                  Your first digital mystery is waiting!
+                  Amazing detective reading and caring advice at Aina&apos;s House, {nickname}! Next
+                  up in Screen 06: investigating digital messages together at the Cyber Café.
                 </p>
               </div>
 
@@ -809,17 +1173,18 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
                   <DetectiveAvatar config={avatarConfig} view="front" pose="wave" />
                 </div>
                 <div className="w-24 h-22">
-                  <PusheenIllustration expression="excited" pose="waving" />
+                  <PusheenIllustration expression="celebrating" pose="waving" />
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-sky-50/90 border border-sky-200 p-4 text-xs sm:text-sm font-semibold text-[#0E3558] space-y-1">
-                <p className="font-extrabold text-[#0369A1]">
-                  SCREEN 03 – DETECTIVE HQ: SEGMENT 1, ACTIVITY 1, INDUCTION SET
+              <div className="rounded-2xl bg-amber-50/90 border border-amber-200 p-4 text-xs sm:text-sm font-semibold text-[#0E3558] space-y-1">
+                <p className="font-extrabold text-[#B45309] inline-flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4" aria-hidden="true" />
+                  <span>CYBER CAFÉ UNLOCKED &amp; SCREEN 05 PROGRESS SAVED</span>
                 </p>
                 <p className="text-[#475569]">
-                  Welcome inside Detective HQ, {nickname}! Screen 02 onboarding is complete and your
-                  progress is linked to your student account.
+                  Your Red Flag Centre clues, Q1–Q5 reading record, and full safety advice
+                  transcript are saved in your Mission Tracker and teacher/parent portals.
                 </p>
               </div>
 
@@ -828,13 +1193,26 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
                   type="button"
                   onClick={() => {
                     playSoftSelect();
-                    persistState({ ...gameStateRef.current, lastScene: 'town' });
-                    setStage('town-free');
+                    void persistState({ ...gameStateRef.current, lastScene: 'town' });
+                    navigateWithLoading('town-free');
                   }}
                   className="min-h-[44px] rounded-full bg-white hover:bg-sky-50 border border-sky-200 px-5 py-2 text-xs sm:text-sm font-bold text-[#0369A1] inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                   <span>RETURN TO DETECTIVE TOWN</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    playPortalOpen();
+                    void persistState({ ...gameStateRef.current, lastScene: 'screen-05-handoff' });
+                    navigateWithLoading('screen-05-handoff');
+                  }}
+                  className="min-h-[44px] rounded-full bg-fuchsia-100 hover:bg-fuchsia-200 border border-fuchsia-200 px-5 py-2 text-xs sm:text-sm font-bold text-[#7E22CE] inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Home className="h-4 w-4" aria-hidden="true" />
+                  <span>REVISIT AINA&apos;S HOUSE</span>
                 </button>
               </div>
             </div>
@@ -904,6 +1282,7 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
         reducedMotion={gameState.settings.reducedMotion}
         allowMovement={
           stage === 'tut-movement' ||
+          stage === 'tut-hq' ||
           stage === 'town-free' ||
           stage === 'explore-buildings'
         }
@@ -916,13 +1295,24 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
         highlightHq={stage === 'tut-hq' && hqDialogueStep === 'prompt'}
         hqIlluminated={hqIlluminated}
         hqDoorOpen={hqDoorOpen}
+        redFlagIlluminated={redFlagIlluminated}
+        redFlagDoorOpen={redFlagDoorOpen}
+        ainaIlluminated={ainaIlluminated}
+        ainaDoorOpen={ainaDoorOpen}
+        cafeIlluminated={cafeIlluminated}
+        cafeDoorOpen={cafeDoorOpen}
+        scriptedWalkToNode={scriptedWalkToNode}
+        onScriptedWalkCompleted={handleScriptedWalkArrived}
         showRustleBehindTree={stage === 'cinematic' && arrivalLineIdx === 2}
         customMapMedia={customMapMedia}
         pusheenState={townPusheenState}
         pusheenExpression={
           stage === 'welcome-dialogue' && currentWelcomeStep
             ? currentWelcomeStep.expression
-            : stage === 'hq-entrance'
+            : stage === 'hq-entrance' ||
+                stage === 'red-flag-walk' ||
+                stage === 'aina-walk' ||
+                stage === 'cafe-walk'
               ? 'excited'
               : 'happy'
         }
@@ -994,10 +1384,16 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
                 type="button"
                 onClick={() => {
                   playPortalOpen();
-                  if (gameState.lastScene === 'screen-03-handoff') {
-                    setStage('screen-03-handoff');
+                  if (gameState.lastScene === 'screen-06-handoff') {
+                    navigateWithLoading('screen-06-handoff');
+                  } else if (gameState.lastScene === 'screen-05-handoff') {
+                    navigateWithLoading('screen-05-handoff');
+                  } else if (gameState.lastScene === 'screen-04-handoff') {
+                    navigateWithLoading('screen-04-handoff');
+                  } else if (gameState.lastScene === 'screen-03-handoff') {
+                    navigateWithLoading('screen-03-handoff');
                   } else {
-                    setStage('town-free');
+                    navigateWithLoading('town-free');
                   }
                 }}
                 className="aero-glossy-btn w-full min-h-[48px] rounded-full bg-gradient-to-b from-[#34D399] to-[#16A34A] hover:from-[#4ADE80] hover:to-[#15803D] px-6 py-2.5 text-sm sm:text-base font-bold text-white cursor-pointer"
@@ -1086,6 +1482,11 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
                   : 'Where am I? Wait... did something just move behind that tree?'
               }
               settings={gameState.settings}
+              onSkipAll={() => {
+                setWelcomeSubStep('peeking');
+                setWelcomeDialogueIdx(0);
+                setStage('welcome-dialogue');
+              }}
               onNext={() => {
                 if (arrivalLineIdx === 1) {
                   setArrivalLineIdx(2);
@@ -1124,6 +1525,16 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
                 choices={currentWelcomeStep.choices}
                 settings={gameState.settings}
                 onReplay={() => setWelcomeDialogueIdx(0)}
+                onSkipAll={() => {
+                  persistState({
+                    ...gameStateRef.current,
+                    tutorialProgress: {
+                      ...gameStateRef.current.tutorialProgress,
+                      welcomeConversationDone: true,
+                    },
+                  });
+                  setStage('hud-intro');
+                }}
                 onChoiceSelect={(_choice: DialogueChoice) => {
                   setWelcomeDialogueIdx((prev) => prev + 1);
                 }}
@@ -1207,6 +1618,7 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
               expression={currentBagStep.expression}
               text={currentBagStep.text}
               settings={gameState.settings}
+              onSkipAll={() => setTutPhase('await-click')}
               onNext={() => {
                 if (tutSubIdx + 1 < TUT_BAG_INTRO_SCRIPT.length) {
                   setTutSubIdx((prev) => prev + 1);
@@ -1310,6 +1722,7 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
             text={currentExploreStep.text}
             settings={gameState.settings}
             onReplay={() => setTutSubIdx(0)}
+            onSkipAll={() => setStage('explore-buildings')}
             onNext={() => {
               if (tutSubIdx + 1 < EXPLORE_INTRO_SCRIPT.length) {
                 setTutSubIdx((prev) => prev + 1);
@@ -1364,6 +1777,7 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
               expression={currentMovementStep.expression}
               text={currentMovementStep.text}
               settings={gameState.settings}
+              onSkipAll={() => setTutPhase('await-click')}
               onNext={() => {
                 if (tutSubIdx + 1 < TUT_MOVEMENT_INTRO_SCRIPT.length) {
                   setTutSubIdx((prev) => prev + 1);
@@ -1441,6 +1855,17 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
                 expression={currentCompleteStep.expression}
                 text={currentCompleteStep.text}
                 settings={gameState.settings}
+                onSkipAll={() => {
+                  playLoginSuccess();
+                  persistState({
+                    ...gameStateRef.current,
+                    tutorialProgress: {
+                      ...gameStateRef.current.tutorialProgress,
+                      tutorialCompleted: true,
+                    },
+                  });
+                  setTutCompleteCardShown(true);
+                }}
                 onNext={() => {
                   if (tutSubIdx + 1 < TUT_COMPLETE_SCRIPT.length) {
                     setTutSubIdx((prev) => prev + 1);
@@ -1539,15 +1964,63 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
         </>
       )}
 
+      {/* Walking Along Stone Path to Red Flag Centre / Aina's House / Cyber Café */}
+      {(stage === 'red-flag-walk' || stage === 'aina-walk' || stage === 'cafe-walk') && (
+        <>
+          <div className="fixed inset-x-0 bottom-4 z-30 pointer-events-none">
+            <DialogueBox
+              speaker="pusheen"
+              expression="excited"
+              text={
+                stage === 'aina-walk'
+                  ? "Follow the cobblestone path to Aina's House! She's waiting for our help!"
+                  : stage === 'cafe-walk'
+                    ? 'Follow the path across town to the Cyber Café! Screen 06 awaits!'
+                    : 'Follow the cobblestone path to the Red Flag Centre! Our next investigation awaits!'
+              }
+              settings={gameState.settings}
+              showNextButton={false}
+            />
+          </div>
+          {entranceFading && (
+            <div
+              aria-hidden="true"
+              className={`fixed inset-0 z-50 transition-opacity duration-600 opacity-100 ${
+                stage === 'aina-walk'
+                  ? 'bg-fuchsia-50'
+                  : stage === 'cafe-walk'
+                    ? 'bg-amber-50'
+                    : 'bg-rose-50'
+              }`}
+            />
+          )}
+        </>
+      )}
+
       {/* FREE TOWN EXPLORATION */}
       {stage === 'town-free' && !selectedBuilding && (
         <div className="fixed inset-x-0 bottom-3 z-20 px-3 pointer-events-none">
-          <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-2 aero-glass-card rounded-2xl border border-white/95 bg-white/88 px-4 py-2.5 shadow-md pointer-events-auto">
+          <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2 aero-glass-card rounded-2xl border border-white/95 bg-white/88 px-4 py-2.5 shadow-md pointer-events-auto">
             <p className="relative z-10 text-xs sm:text-sm font-semibold text-[#0E3558]">
               {offPathWarning ? (
                 <span className="text-[#6D28D9]">
                   <strong>Pusheen:</strong> &ldquo;Hmm, that isn&apos;t a pathway! Try clicking the
                   stone path instead.&rdquo;
+                </span>
+              ) : gameState.unlockedBuildings.includes('cyber-cafe') ? (
+                <span>
+                  Click the <strong>stone pathway</strong> (or WASD/Arrows) to walk, or visit any
+                  unlocked location — <strong>Cyber Café</strong> is now open!
+                </span>
+              ) : gameState.unlockedBuildings.includes('ainas-house') ? (
+                <span>
+                  Click the <strong>stone pathway</strong> (or WASD/Arrows) to walk, revisit{' '}
+                  <strong>Red Flag Centre</strong>, or visit <strong>Aina&apos;s House</strong>!
+                </span>
+              ) : gameState.unlockedBuildings.includes('red-flag-centre') ? (
+                <span>
+                  Click the <strong>stone pathway</strong> (or WASD/Arrows) to walk, revisit{' '}
+                  <strong>Detective HQ</strong>, or enter the <strong>Red Flag Centre</strong>!
                 </span>
               ) : (
                 <span>
@@ -1556,17 +2029,58 @@ export const Screen02Experience: React.FC<Screen02ExperienceProps> = ({
                 </span>
               )}
             </p>
-            <button
-              type="button"
-              onClick={() => {
-                playPortalOpen();
-                setStage('hq-entrance');
-              }}
-              className="relative z-10 aero-glossy-btn min-h-[38px] rounded-full bg-gradient-to-b from-[#34D399] to-[#16A34A] px-4 py-1.5 text-xs font-bold text-white inline-flex items-center gap-1.5 cursor-pointer"
-            >
-              <DoorOpen className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>ENTER DETECTIVE HQ</span>
-            </button>
+            <div className="relative z-10 flex flex-wrap items-center gap-2">
+              {gameState.unlockedBuildings.includes('cyber-cafe') && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    playPortalOpen();
+                    startWalkTransition('cafe', gameStateRef.current);
+                  }}
+                  className="aero-glossy-btn min-h-[38px] rounded-full bg-gradient-to-b from-[#FBBF24] to-[#D97706] px-4 py-1.5 text-xs font-bold text-white inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Coffee className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>CYBER CAFÉ</span>
+                </button>
+              )}
+              {gameState.unlockedBuildings.includes('ainas-house') && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    playPortalOpen();
+                    startWalkTransition('aina', gameStateRef.current);
+                  }}
+                  className="aero-glossy-btn min-h-[38px] rounded-full bg-gradient-to-b from-[#E879F9] to-[#9333EA] px-4 py-1.5 text-xs font-bold text-white inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Home className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>AINA&apos;S HOUSE</span>
+                </button>
+              )}
+              {gameState.unlockedBuildings.includes('red-flag-centre') && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    playPortalOpen();
+                    startWalkTransition('red-flag', gameStateRef.current);
+                  }}
+                  className="aero-glossy-btn min-h-[38px] rounded-full bg-gradient-to-b from-[#FB7185] to-[#E11D48] px-4 py-1.5 text-xs font-bold text-white inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Flag className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>RED FLAG CENTRE</span>
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  playPortalOpen();
+                  setStage('hq-entrance');
+                }}
+                className="aero-glossy-btn min-h-[38px] rounded-full bg-gradient-to-b from-[#34D399] to-[#16A34A] px-4 py-1.5 text-xs font-bold text-white inline-flex items-center gap-1.5 cursor-pointer"
+              >
+                <DoorOpen className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>ENTER DETECTIVE HQ</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

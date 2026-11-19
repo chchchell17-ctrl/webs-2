@@ -4,6 +4,11 @@ import type {
   BuildingId,
   GameSettings,
   InventoryState,
+  Screen03Progress,
+  Screen04Progress,
+  Screen05Progress,
+  Screen06Progress,
+  Screen07Progress,
   TutorialProgress,
 } from './game.ts';
 
@@ -32,8 +37,14 @@ export interface StudentProgressSummary {
   stars: number;
   badges: string[];
   completedMissions: string[];
+  currentMission?: string;
   lastPosition: string;
   tutorialProgress?: TutorialProgress;
+  screen03Progress?: Screen03Progress;
+  screen04Progress?: Screen04Progress;
+  screen05Progress?: Screen05Progress;
+  screen06Progress?: Screen06Progress;
+  screen07Progress?: Screen07Progress;
   settings?: GameSettings;
   inventory?: InventoryState;
   unlockedBuildings?: BuildingId[];
@@ -77,6 +88,42 @@ export interface ParentSession {
 }
 
 export type AuthenticatedSession = StudentSession | TeacherSession | ParentSession;
+
+export interface PortalStudentRecord {
+  studentId: string;
+  studentCode: string;
+  displayName: string;
+  detectiveNickname: string;
+  classCode: string;
+  className: string;
+  xp: number;
+  stars: number;
+  level: number;
+  currentMission: string;
+  completedMissions: string[];
+  unlockedBuildings: BuildingId[];
+  lastScene: string;
+  screen03Completed: boolean;
+  screen04Progress?: Screen04Progress;
+  screen05Progress?: Screen05Progress;
+  screen06Progress?: Screen06Progress;
+  screen07Progress?: Screen07Progress;
+  updatedAt: number;
+}
+
+export interface TeacherOverviewResponse {
+  ok: boolean;
+  source: 'preview' | 'cloud';
+  students: PortalStudentRecord[];
+  message?: string;
+}
+
+export interface ParentOverviewResponse {
+  ok: boolean;
+  source: 'preview' | 'cloud';
+  children: PortalStudentRecord[];
+  message?: string;
+}
 
 export interface AuthApiError {
   ok: false;

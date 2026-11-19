@@ -1,0 +1,1374 @@
+# MASTER DEVELOPMENT PROMPT – SCREEN 03
+# DIGITAL DETECTIVE WORLD
+# DETECTIVE HQ – THE MYSTERY OF THE UNEXPECTED PRIZE
+## SEGMENT 1 · ACTIVITY 1 · INDUCTION SET
+
+---
+
+# 1. YOUR ROLE AND DEVELOPMENT RESPONSIBILITY
+
+Act as a senior full-stack developer, educational game designer, UI/UX designer, interactive storytelling developer and learning experience designer.
+
+You are continuing development of my existing website:
+
+DIGITAL DETECTIVE WORLD.
+
+The following screens have already been designed and approved:
+
+- SCREEN 01 – Login Portal.
+- SCREEN 02 – Character Customisation, Detective Pusheen's Welcome and Interactive Tutorial.
+
+Your task is to continue directly from Screen 02 and implement:
+
+SCREEN 03 – DETECTIVE HQ: THE MYSTERY OF THE UNEXPECTED PRIZE.
+
+This is the first actual learning activity in the website.
+
+IMPORTANT DEVELOPMENT INSTRUCTIONS:
+
+1. Inspect the existing project before making changes.
+2. Preserve Screens 01 and 02.
+3. Do not rebuild the login system.
+4. Do not redesign the existing game interface.
+5. Reuse the student's customised avatar.
+6. Reuse the established Detective Pusheen character.
+7. Reuse the existing dialogue system.
+8. Reuse the existing HUD, XP, stars and progress system.
+9. Reuse the existing navigation and building system.
+10. Connect the new activity to the student's authenticated profile.
+11. Build real interactions, not static mock-ups.
+12. Do not use placeholder buttons.
+13. Ensure the student can complete the activity independently without teacher assistance.
+14. Test the complete activity before declaring it finished.
+
+Do not create a separate website or a separate game environment.
+
+Everything must remain part of the existing Digital Detective World project.
+
+---
+
+# 2. LEARNING EXPERIENCE AND PURPOSE
+
+The student has just completed the introductory tutorial in Screen 02.
+
+They have entered Detective HQ for their first mission.
+
+The purpose of this screen is to introduce the concept of online safety through an engaging digital mystery.
+
+The experience must combine:
+
+- Interactive storytelling.
+- Character conversations.
+- Animated video.
+- Problem identification.
+- Decision-making.
+- Immediate feedback.
+- Guided learning.
+- A short knowledge check.
+
+The student must feel that they are investigating a real mystery rather than completing a conventional worksheet.
+
+## Learning focus
+
+Online Safety.
+
+The student is introduced to:
+
+1. Recognising that unexpected online messages may be suspicious.
+2. Thinking carefully before clicking unfamiliar links.
+3. Keeping personal information private.
+4. Asking a trusted adult when something online feels unsafe.
+
+IMPORTANT:
+
+This is the induction set, not the independent end-of-lesson assessment.
+
+Do not replace the original Year 5 English learning objectives or DSKP alignment.
+
+Preserve the original 60-minute lesson structure.
+
+This screen introduces the topic and prepares students for the subsequent reading, comprehension, writing and independent assessment activities.
+
+---
+
+# 3. SCREEN 03 – COMPLETE USER FLOW
+
+Implement the following sequence:
+
+STUDENT ENTERS DETECTIVE HQ
+        ↓
+MEET DETECTIVE PUSHEEN INSIDE HQ
+        ↓
+MISSION BRIEFING
+        ↓
+MISSION 01: THE MYSTERY OF THE UNEXPECTED PRIZE
+        ↓
+WATCH THE INVESTIGATION VIDEO
+        ↓
+IDENTIFY WHAT HAPPENED
+        ↓
+ANSWER THE YES/NO DECISION
+        ↓
+RECEIVE BRANCH-SPECIFIC FEEDBACK
+        ↓
+BOTH BRANCHES CONVERGE
+        ↓
+LEARN ABOUT ONLINE SAFETY
+        ↓
+EXPLORE THREE ONLINE SAFETY RULES
+        ↓
+COMPLETE A QUICK KNOWLEDGE CHECK
+        ↓
+MISSION INDUCTION COMPLETED
+        ↓
+UNLOCK RED FLAG CENTRE
+        ↓
+RETURN TO DETECTIVE TOWN
+        ↓
+SCREEN 04
+
+Do not skip any of these stages.
+
+---
+
+# PART 1 – ENTERING DETECTIVE HQ
+
+## SCENE 01: THE INVESTIGATION HEADQUARTERS
+
+The screen transitions from Screen 02.
+
+The student enters Detective HQ with their customised avatar.
+
+Maintain the established visual identity:
+
+PURBLE PLACE × FRUTIGER AERO.
+
+The interior should feel like a beautiful, colourful and sophisticated detective investigation centre.
+
+## 1.1 Environmental design
+
+Include:
+
+- Large curved glass windows overlooking Detective Town.
+- A central investigation desk.
+- Large digital monitors.
+- Computer workstations.
+- A giant digital town map.
+- Magnifying-glass decorations.
+- Detective case files.
+- Investigation equipment.
+- Shelves and cabinets.
+- Glowing aqua and purple lighting.
+- A comfortable investigation chair.
+- A central mission briefing screen.
+
+Use a layered 3D-style environment with depth.
+
+The room should be bright and inviting, not dark or frightening.
+
+## 1.2 Character placement
+
+- The player's customised avatar enters through the main door.
+- Detective Pusheen is waiting beside the central investigation desk.
+- Pusheen walks towards the large digital screen.
+- The central screen activates when Pusheen approaches.
+
+## 1.3 Entrance animation
+
+1. HQ entrance opens.
+2. Player avatar walks inside.
+3. Pusheen follows.
+4. Camera pans across the investigation room.
+5. Central monitor turns on.
+6. Mission notification appears.
+
+---
+
+# PART 2 – DETECTIVE PUSHEEN'S WELCOME
+
+## SCENE 02: WELCOME TO DETECTIVE HQ
+
+Pusheen stands beside the investigation desk.
+
+Start the dialogue system.
+
+Use the established dialogue interface from Screen 02.
+
+Include:
+
+- Character portrait or full character.
+- Character name.
+- Speech bubble.
+- Dialogue text.
+- Character expressions.
+- Next button.
+- Typewriter effect.
+- Optional narration.
+
+## COMPLETE DIALOGUE
+
+DETECTIVE PUSHEEN:
+
+"Welcome to Detective HQ, Junior Detective!"
+
+PLAYER:
+
+"Wow! This place is amazing!"
+
+DETECTIVE PUSHEEN:
+
+"This is where we investigate mysterious messages, discover clues and solve digital mysteries!"
+
+PLAYER:
+
+"So, what is our first case?"
+
+DETECTIVE PUSHEEN:
+
+"Excellent question! I have just received a very unusual report."
+
+Pusheen walks towards the digital monitor.
+
+DETECTIVE PUSHEEN:
+
+"Someone has received a message promising an amazing prize. But something doesn't seem quite right..."
+
+PLAYER:
+
+"An amazing prize? What's wrong with that?"
+
+DETECTIVE PUSHEEN:
+
+"Well, Detective, not every message we receive online is safe. Sometimes, messages can trick people into making unsafe choices."
+
+PLAYER:
+
+"Oh! So we need to investigate?"
+
+DETECTIVE PUSHEEN:
+
+"Exactly! Are you ready for your very first case?"
+
+PLAYER RESPONSE:
+
+LET'S INVESTIGATE!
+
+When clicked, the mission briefing screen appears.
+
+Do not automatically skip the conversation.
+
+Allow students to advance the dialogue at their own pace.
+
+---
+
+# PART 3 – MISSION BRIEFING
+
+## SCENE 03: MISSION 01
+
+Display a large digital case file on the central monitor.
+
+MISSION 01
+
+THE MYSTERY OF THE UNEXPECTED PRIZE
+
+CASE DESCRIPTION:
+
+"An unexpected online message promises a FREE prize and asks someone to click a link."
+
+YOUR MISSION:
+
+- Watch the investigation video.
+- Identify what is happening.
+- Make a decision about the suspicious message.
+- Discover why online safety matters.
+
+STATUS:
+
+READY TO START.
+
+Use a visually attractive detective case-file interface.
+
+Include:
+
+- Mystery envelope illustration.
+- Magnifying-glass animation.
+- Glowing question mark.
+- Digital notification illustration.
+- Mission title.
+- Mission objectives.
+
+## Dialogue
+
+PUSHEEN:
+
+"Before we investigate, let's watch what happened."
+
+"Keep your detective eyes open. There might be something important in the video!"
+
+Button:
+
+WATCH THE VIDEO.
+
+The button must open the actual video player.
+
+---
+
+# PART 4 – INVESTIGATION VIDEO
+
+## SCENE 04: THE UNEXPECTED MESSAGE
+
+Create a video-viewing environment that looks like a computer monitor inside Detective HQ.
+
+Do not use an ordinary worksheet-style video section.
+
+The video should feel like a short animated story.
+
+Suggested duration:
+
+35–50 seconds.
+
+## 4.1 Video storyboard
+
+SHOT 1 – 0–8 SECONDS
+
+Visual:
+
+A child is sitting at a computer desk playing an online game.
+
+Narration:
+
+"One afternoon, a student was enjoying an online game."
+
+SHOT 2 – 8–15 SECONDS
+
+Visual:
+
+A notification suddenly appears on the computer screen.
+
+Narration:
+
+"Suddenly, a strange message appeared on the screen."
+
+SHOT 3 – 15–25 SECONDS
+
+Visual:
+
+A colourful prize notification appears.
+
+Message:
+
+CONGRATULATIONS!
+
+YOU HAVE WON A FREE TABLET!
+
+Narration:
+
+"The message promised the student a free tablet!"
+
+SHOT 4 – 25–33 SECONDS
+
+Visual:
+
+A button appears saying:
+
+CLAIM YOUR PRIZE NOW!
+
+Narration:
+
+"The message asked the student to click a link to collect the prize."
+
+SHOT 5 – 33–42 SECONDS
+
+Visual:
+
+The student looks confused and moves the cursor towards the message.
+
+Narration:
+
+"But the student had never entered a competition. What should they do?"
+
+The video ends by freezing on the suspicious notification.
+
+## 4.2 Suspicious message design
+
+Display the following message clearly:
+
+LUCKY PRIZE CENTRE
+
+NEW NOTIFICATION
+
+CONGRATULATIONS!
+
+You've been selected to receive a FREE TABLET!
+
+Click below to claim your amazing prize!
+
+CLAIM YOUR PRIZE NOW!
+
+Make the message look like a realistic digital notification.
+
+Do not make the warning signs too obvious at this stage.
+
+The purpose is to encourage students to think about the situation.
+
+## 4.3 Video player requirements
+
+Include:
+
+- Play.
+- Pause.
+- Replay.
+- Volume.
+- Subtitles.
+- Full-screen.
+- Progress bar.
+
+Allow students to replay the video.
+
+Pusheen must remain available beside the video player.
+
+After the video ends:
+
+PUSHEEN:
+
+"Interesting, isn't it, Detective?"
+
+"Let's see if you can identify what happened!"
+
+## Missing video asset rule
+
+Inspect the existing project assets first.
+
+If the original video is available, use it.
+
+If it is missing, create an original temporary animated video or an equivalent sequence of animated scenes based on the storyboard above.
+
+Clearly identify the temporary video asset so it can be replaced later.
+
+Do not use a broken video player or pretend an unavailable video has been implemented.
+
+---
+
+# PART 5 – IDENTIFY THE PROBLEM
+
+## SCENE 05: WHAT HAPPENED IN THE VIDEO?
+
+Keep the video visible in a smaller screen on the left.
+
+On the right, display the investigation question.
+
+PUSHEEN:
+
+"Let's review the evidence!"
+
+QUESTION:
+
+WHAT IS THE PROBLEM?
+
+"What happened to the student in the video?"
+
+Provide three answer cards.
+
+OPTION A:
+
+"A student received an unexpected message promising a free prize and asking them to click a link."
+
+OPTION B:
+
+"A student could not play an online game."
+
+OPTION C:
+
+"A student received a homework reminder from a teacher."
+
+## 5.1 Answer key
+
+Correct answer:
+
+OPTION A.
+
+## 5.2 Feedback
+
+If the student chooses A:
+
+Display:
+
+CORRECT!
+
+PUSHEEN:
+
+"Well spotted! The student received an unexpected message promising a free prize."
+
+"That's our first important clue!"
+
+If the student chooses B or C:
+
+Display:
+
+NOT QUITE, DETECTIVE!
+
+PUSHEEN:
+
+"Think about the unusual message that appeared on the computer screen."
+
+"Watch the video again if you need to."
+
+Allow the student to retry.
+
+Do not allow progression until the correct answer is selected.
+
+Do not penalise students for incorrect attempts.
+
+The student must receive immediate feedback.
+
+---
+
+# PART 6 – YES/NO DECISION CHALLENGE
+
+## SCENE 06: WOULD YOU CLICK IT?
+
+THIS IS ONE OF THE MOST IMPORTANT INTERACTIONS IN SCREEN 03.
+
+I want the experience to look like a real computer or mobile notification appearing unexpectedly.
+
+It must not look like a conventional multiple-choice worksheet.
+
+## 6.1 Visual transition
+
+After the student answers the previous question:
+
+1. Video screen fades out.
+2. Computer interface becomes the main focus.
+3. A notification sound plays.
+4. Suspicious pop-up appears suddenly.
+5. Background becomes slightly blurred.
+6. Cursor appears.
+7. Pusheen reacts with a surprised expression.
+
+The pop-up should resemble a digital message.
+
+## 6.2 Pop-up content
+
+LUCKY PRIZE CENTRE
+
+NEW MESSAGE
+
+YOU'RE A WINNER!
+
+FREE TABLET!
+
+Congratulations!
+
+You have been selected to receive an amazing prize.
+
+Click the button below to claim your reward immediately!
+
+CLAIM NOW!
+
+Then display:
+
+WOULD YOU CLICK THIS MESSAGE?
+
+Two large buttons:
+
+YES
+
+NO
+
+Use clear visual differences between the two buttons.
+
+Make them large enough for Year 5 pupils to interact with on tablets and mobile phones.
+
+## 6.3 Interaction rules
+
+The student must select YES or NO.
+
+IMPORTANT:
+
+- Do not ask students to explain their decision.
+- Do not require written answers.
+- Do not display a graded score.
+- Do not deduct XP.
+- Do not punish students for choosing YES.
+- Do not create separate mission pathways.
+
+The purpose is to introduce the learning content.
+
+## 6.4 If the student clicks YES
+
+The pop-up shakes gently.
+
+Pusheen appears with a surprised expression.
+
+Dialogue:
+
+"Oh no, Detective! You have to learn more about Online Safety."
+
+Then:
+
+"Don't worry! That's exactly why we're here. Let's investigate together!"
+
+Visual feedback:
+
+- Gentle warning animation.
+- Pusheen points towards the investigation screen.
+- Suspicious notification fades away.
+
+## 6.5 If the student clicks NO
+
+The pop-up disappears.
+
+Pusheen smiles and gives an approving gesture.
+
+Dialogue:
+
+"Great job, Detective! Let's learn more about Online Safety."
+
+Visual feedback:
+
+- Small celebratory sparkle.
+- Pusheen nods approvingly.
+- Investigation screen appears.
+
+## 6.6 CRITICAL BRANCHING REQUIREMENT
+
+Both YES and NO must lead to exactly the same next learning scene.
+
+YES:
+"Oh no, Detective! You have to learn more about Online Safety."
+
+NO:
+"Great job, Detective! Let's learn more about Online Safety."
+
+BOTH:
+
+LEARN ABOUT ONLINE SAFETY.
+
+Do not make YES a failure ending.
+
+Do not make NO skip the learning content.
+
+Every student must complete the same online safety mini-lesson.
+
+---
+
+# PART 7 – DETECTIVE PUSHEEN'S ONLINE SAFETY MINI-LESSON
+
+## SCENE 07: WHAT IS ONLINE SAFETY?
+
+After the decision challenge, transition into a learning corner inside Detective HQ.
+
+The environment should remain part of the detective headquarters.
+
+The central screen displays:
+
+ONLINE SAFETY
+
+THINK BEFORE YOU CLICK!
+
+Pusheen stands beside the screen.
+
+## Complete dialogue
+
+PUSHEEN:
+
+"Now, Detective, let's learn something important."
+
+"Do you know what online safety means?"
+
+PLAYER:
+
+"Not really!"
+
+PUSHEEN:
+
+"That's okay! Online safety means protecting ourselves and making smart choices whenever we use the internet."
+
+PLAYER:
+
+"Does that mean when I play games or use the internet?"
+
+PUSHEEN:
+
+"Exactly! It includes websites, online games, apps, emails and messages."
+
+PLAYER:
+
+"So, how can I stay safe?"
+
+PUSHEEN:
+
+"Let me show you three important detective rules!"
+
+Use short dialogue segments.
+
+Do not display the entire conversation in one large text block.
+
+---
+
+# PART 8 – THREE INTERACTIVE ONLINE SAFETY RULES
+
+## SCENE 08: THREE IMPORTANT DETECTIVE RULES
+
+This section must be interactive.
+
+Do not present three static slides.
+
+Create three large illustrated cards.
+
+Each card should have:
+
+- Original illustration.
+- Attractive visual design.
+- Short heading.
+- Clickable interaction.
+- Animated reveal.
+- Pusheen explanation.
+- Completion indicator.
+
+Students must explore all three cards before continuing.
+
+## RULE 1 – STOP BEFORE YOU CLICK
+
+Illustration:
+
+A cartoon hand stopping before clicking a computer mouse.
+
+Heading:
+
+STOP BEFORE YOU CLICK.
+
+Pusheen says:
+
+"Never rush to click an unexpected message or link. Take a moment to think first."
+
+Example:
+
+"You receive a message saying you have won a prize you never entered for. Should you click immediately?"
+
+Remember:
+
+STOP AND THINK BEFORE CLICKING.
+
+## RULE 2 – KEEP PERSONAL INFORMATION PRIVATE
+
+Illustration:
+
+A digital padlock protecting personal information.
+
+Heading:
+
+KEEP PERSONAL INFORMATION PRIVATE.
+
+Pusheen says:
+
+"Never share private information with strangers online."
+
+Examples:
+
+- Full name.
+- Home address.
+- School name.
+- Password.
+- Phone number.
+
+Remember:
+
+KEEP YOUR PERSONAL INFORMATION PRIVATE.
+
+## RULE 3 – ASK A TRUSTED ADULT
+
+Illustration:
+
+A child asking a parent or trusted adult for help while looking at a computer.
+
+Heading:
+
+ASK A TRUSTED ADULT.
+
+Pusheen says:
+
+"If you receive a strange message or something makes you uncomfortable, don't handle it alone."
+
+"Show it to someone you trust, such as your parent, guardian or teacher."
+
+Remember:
+
+ASKING FOR HELP IS A SMART DETECTIVE DECISION.
+
+## 8.1 Interaction behaviour
+
+When a student clicks a card:
+
+1. The card expands.
+2. Illustration becomes larger.
+3. Explanation appears.
+4. Pusheen delivers the corresponding dialogue.
+5. The student clicks CONTINUE.
+6. The card receives a completed indicator.
+
+After all three cards are explored:
+
+Display:
+
+ALL THREE RULES DISCOVERED!
+
+Pusheen:
+
+"Wonderful! You're learning how to become a smart digital detective!"
+
+Only then allow the student to continue.
+
+---
+
+# PART 9 – QUICK UNDERSTANDING CHECK
+
+## SCENE 09: PUSHEEN'S DETECTIVE CHECK
+
+Pusheen:
+
+"Let's see if you've learned something new, Detective!"
+
+Display one multiple-choice question.
+
+QUESTION:
+
+You receive a message from someone you don't know. It says you can win a free tablet if you click a link.
+
+WHAT SHOULD YOU DO?
+
+OPTION A:
+
+Click the link immediately.
+
+OPTION B:
+
+Give the sender your personal information.
+
+OPTION C:
+
+Stop and ask a trusted adult.
+
+## Answer key
+
+Correct answer:
+
+OPTION C.
+
+## Feedback
+
+If C is selected:
+
+Display:
+
+EXCELLENT WORK!
+
+Pusheen:
+
+"That's right! Asking a trusted adult is a safe way to handle a suspicious message."
+
+"You're learning quickly, Detective!"
+
+If A or B is selected:
+
+Display:
+
+TRY AGAIN!
+
+Pusheen:
+
+"Think about what you learned. Should you trust an unexpected message from someone you don't know?"
+
+Allow another attempt.
+
+Do not deduct XP or stars.
+
+Do not treat this as the independent final assessment.
+
+This is a short formative knowledge check.
+
+---
+
+# PART 10 – MISSION COMPLETION
+
+## SCENE 10: PUSHEEN'S FINAL ENCOURAGEMENT
+
+After the student completes the knowledge check:
+
+Transition back to the main investigation desk.
+
+Pusheen stands beside the student.
+
+## Complete dialogue
+
+PUSHEEN:
+
+"Fantastic work, Detective!"
+
+"Today, you've discovered why we must be careful when using the internet."
+
+PLAYER:
+
+"So, not every message online can be trusted?"
+
+PUSHEEN:
+
+"That's right! We need to think carefully before clicking links, sharing information or responding to strangers."
+
+PLAYER:
+
+"I understand!"
+
+PUSHEEN:
+
+"Wonderful! But this is only the beginning. There are more clues waiting for us."
+
+## Mission progress panel
+
+Display:
+
+MISSION 01
+
+THE MYSTERY OF THE UNEXPECTED PRIZE
+
+Show completed stages:
+
+- Watched the investigation video.
+- Identified the problem.
+- Completed the YES/NO decision.
+- Explored three online safety rules.
+- Completed the quick understanding check.
+
+Display:
+
+INDUCTION COMPLETED!
+
+Important:
+
+Do not grant the final mission badge or mark the entire English lesson as completed.
+
+Only record the completion of this induction activity.
+
+Do not give mission rewards prematurely.
+
+If the existing XP system awards points for completed learning activities, use the established reward configuration.
+
+Do not invent new reward values.
+
+---
+
+# PART 11 – UNLOCK RED FLAG CENTRE
+
+## SCENE 11: THE NEXT LOCATION
+
+The camera moves towards the digital town map displayed on the main HQ screen.
+
+Red Flag Centre begins to glow.
+
+The lock disappears.
+
+Pusheen:
+
+"Look, Detective! Our next location is ready!"
+
+PLAYER:
+
+"Where are we going?"
+
+PUSHEEN:
+
+"The Red Flag Centre! We'll learn how to spot warning signs hidden in digital messages."
+
+PLAYER:
+
+"Let's go!"
+
+Display:
+
+NEW LOCATION UNLOCKED!
+
+RED FLAG CENTRE
+
+"Your next investigation awaits!"
+
+The building must become genuinely unlocked in the game progression system.
+
+Do not simply change the appearance of the building.
+
+Update the student's saved mission and building access data.
+
+---
+
+# PART 12 – TRANSITION TO SCREEN 04
+
+Provide a button:
+
+CONTINUE TO RED FLAG CENTRE.
+
+When clicked:
+
+1. Save the completed induction progress.
+2. Update the student's Mission Tracker.
+3. Save the unlocked Red Flag Centre status.
+4. Return to Detective Town.
+5. Display the player's customised avatar.
+6. Keep Detective Pusheen beside the player.
+7. Move the avatar towards Red Flag Centre.
+8. Trigger the entrance animation.
+9. Transition to Screen 04.
+
+SCREEN 04:
+
+RED FLAG CENTRE – SEGMENT 2, ACTIVITY 1.
+
+Do not implement the Red Flag Centre learning activity inside Screen 03.
+
+Only prepare the transition.
+
+---
+
+# PART 13 – TECHNICAL IMPLEMENTATION
+
+Inspect and reuse the existing architecture.
+
+Do not create duplicate components.
+
+Suggested reusable components:
+
+DetectiveHQScreen
+├── HQEnvironment
+├── PlayerAvatar
+├── DetectivePusheen
+├── DialogueSystem
+├── MissionBriefing
+├── InvestigationVideo
+├── VideoPlayer
+├── ProblemIdentification
+├── SuspiciousNotification
+├── YesNoDecision
+├── DecisionFeedback
+├── OnlineSafetyLesson
+│   ├── StopBeforeYouClick
+│   ├── KeepInformationPrivate
+│   └── AskTrustedAdult
+├── KnowledgeCheck
+├── MissionCompletion
+├── BuildingUnlock
+└── ProgressSaveManager
+
+Adapt this structure to the existing project.
+
+## Dialogue system
+
+Reuse the same dialogue component from Screen 02.
+
+Support:
+
+- Character name.
+- Character artwork.
+- Character expression.
+- Speech bubble.
+- Typewriter animation.
+- Skip typing.
+- Next button.
+- Optional narration.
+- Player response options.
+
+## Video system
+
+Use the available video asset if supplied.
+
+If no video exists, create an original temporary animation or scene sequence.
+
+Do not use a broken video placeholder.
+
+## State management
+
+Maintain the student's progress throughout the activity.
+
+Suggested stages:
+
+- hq_entered
+- mission_briefing_completed
+- video_completed
+- problem_identified
+- decision_completed
+- online_safety_rule_1_completed
+- online_safety_rule_2_completed
+- online_safety_rule_3_completed
+- knowledge_check_completed
+- induction_completed
+- red_flag_centre_unlocked
+
+Save progress after each meaningful stage.
+
+Allow students to resume after refreshing or returning to the website.
+
+## Decision logic
+
+The YES/NO selection must only control the immediate dialogue feedback.
+
+Both responses must converge into the same online safety lesson.
+
+Do not use the decision response to determine the student's score or unlock access.
+
+## Database
+
+Use the existing Supabase integration if configured.
+
+Inspect the current schema before modifying it.
+
+Do not create a duplicate student account system.
+
+Connect all progress records to the authenticated student.
+
+Apply appropriate Row Level Security.
+
+Use local persistence as an offline fallback.
+
+Never expose service-role keys or private credentials in frontend code.
+
+---
+
+# PART 14 – DESIGN AND ACCESSIBILITY REQUIREMENTS
+
+The complete screen must maintain the existing game design.
+
+Use:
+
+- Glossy glass panels.
+- Rounded corners.
+- Pastel aqua and purple.
+- Bright environmental lighting.
+- Soft shadows.
+- Animated notifications.
+- Friendly character expressions.
+- Large clickable elements.
+
+Do not use:
+
+- Dark frightening visuals.
+- Excessively futuristic cyberpunk styling.
+- Plain worksheet layouts.
+- Tiny buttons.
+- Excessive text.
+- Unnecessary pop-ups.
+
+Ensure:
+
+- Desktop compatibility.
+- Tablet compatibility.
+- Mobile compatibility.
+- Readable dialogue.
+- Captions.
+- Keyboard-accessible controls.
+- Touch-friendly buttons.
+- Reduced-motion support.
+
+The student must always understand what to do next.
+
+---
+
+# PART 15 – ACCEPTANCE TESTING
+
+Do not report Screen 03 as complete until all applicable tests have been performed.
+
+## A. Entry and environment
+
+[ ] Screen 03 opens from Screen 02.
+
+[ ] Detective HQ environment loads.
+
+[ ] Player avatar appears correctly.
+
+[ ] Detective Pusheen appears correctly.
+
+[ ] Camera and entrance animations work.
+
+## B. Mission briefing
+
+[ ] Mission 01 is displayed.
+
+[ ] Mission title is correct.
+
+[ ] Mission description is correct.
+
+[ ] Watch the Video button works.
+
+## C. Investigation video
+
+[ ] Video plays.
+
+[ ] Video pauses.
+
+[ ] Video can be replayed.
+
+[ ] Subtitles work.
+
+[ ] Volume works.
+
+[ ] Full-screen works.
+
+[ ] Missing video asset is clearly identified.
+
+## D. Problem identification
+
+[ ] All three options appear.
+
+[ ] Answer A is recognised as correct.
+
+[ ] Wrong answers receive feedback.
+
+[ ] Students can retry.
+
+[ ] Progression requires the correct answer.
+
+## E. YES/NO challenge
+
+[ ] Suspicious pop-up appears.
+
+[ ] YES button works.
+
+[ ] NO button works.
+
+[ ] YES produces the requested Pusheen dialogue.
+
+[ ] NO produces the requested Pusheen dialogue.
+
+[ ] Both options lead to the same online safety lesson.
+
+[ ] No XP is deducted.
+
+[ ] No student is punished for choosing YES.
+
+## F. Online safety mini-lesson
+
+[ ] Introduction dialogue works.
+
+[ ] Rule 1 card works.
+
+[ ] Rule 2 card works.
+
+[ ] Rule 3 card works.
+
+[ ] All explanations are visible.
+
+[ ] Pusheen provides feedback.
+
+[ ] Completion indicators work.
+
+[ ] Students must explore all three rules.
+
+## G. Knowledge check
+
+[ ] Question appears correctly.
+
+[ ] Answer C is recognised as correct.
+
+[ ] Incorrect answers trigger feedback.
+
+[ ] Retry works.
+
+[ ] The student can continue after answering correctly.
+
+## H. Progression
+
+[ ] Induction completion is recorded.
+
+[ ] Mission Tracker updates.
+
+[ ] Progress is saved.
+
+[ ] Red Flag Centre unlocks.
+
+[ ] Returning students can resume.
+
+[ ] Transition to Screen 04 works.
+
+## I. Responsive testing
+
+[ ] Desktop works.
+
+[ ] Tablet works.
+
+[ ] Mobile works.
+
+[ ] No overlapping panels.
+
+[ ] No horizontal overflow.
+
+[ ] All controls are usable on touch screens.
+
+---
+
+# PART 16 – FINAL DELIVERABLES
+
+When finished, provide:
+
+1. Fully implemented Screen 03.
+2. Detective HQ interior environment.
+3. Pusheen welcome conversation.
+4. Mission briefing interface.
+5. Working investigation video.
+6. Problem identification activity.
+7. Interactive YES/NO suspicious notification.
+8. Both decision feedback branches.
+9. Complete online safety mini-lesson.
+10. Three interactive online safety cards.
+11. Functional knowledge check.
+12. Immediate feedback and retry system.
+13. Mission completion interface.
+14. Red Flag Centre unlock functionality.
+15. Student progress saving.
+16. Returning student resume functionality.
+17. Desktop, tablet and mobile responsiveness.
+18. Working transition into Screen 04.
+19. List of files created or modified.
+20. List of assets used and any temporary assets.
+21. Outstanding configuration requirements.
+22. Actual testing results.
+
+Do not claim an external integration is working unless it has been connected and tested.
+
+Do not invent credentials.
+
+---
+
+# PART 17 – STRICT SCOPE CONTROL
+
+THIS TASK IS ONLY FOR SCREEN 03.
+
+Do not implement:
+
+- Red Flag Centre's full investigation.
+- Aina's House comprehension.
+- Cyber Café activities.
+- Advice Centre writing activity.
+- Game Arcade assessment.
+- Digital Safe Garden passport.
+
+Those belong to later screens.
+
+However, prepare the existing navigation, dialogue, progress and building systems so they can support the remaining learning activities.
+
+PRESERVE ALL PREVIOUSLY APPROVED FEATURES.
+
+Do not delete or replace existing working components unnecessarily.
+
+Do not redesign Screen 01 or Screen 02.
+
+Do not stop at a plan or visual mock-up.
+
+Implement the actual interactive activity.
+
+Test the video, questions, feedback, decision branches, online safety cards, knowledge check, saving and building unlocks.
+
+Fix errors before reporting completion.
+
+FINAL OBJECTIVE:
+
+When a student enters Detective HQ, they must experience an engaging digital mystery, watch the unexpected-prize story, identify the problem, make a YES/NO decision, receive immediate feedback, learn three important online safety rules and complete a short understanding check.
+
+The student must then unlock Red Flag Centre and continue their adventure independently.
+
+END OF SCREEN 03 DEVELOPMENT SPECIFICATION.

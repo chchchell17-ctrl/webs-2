@@ -2,10 +2,12 @@ import type {
   AuthApiResponse,
   AuthenticatedSession,
   BackendStatus,
+  ParentOverviewResponse,
   ParentSession,
   PasswordResetResponse,
   PortalType,
   StudentSession,
+  TeacherOverviewResponse,
   TeacherSession,
 } from '../types/auth.ts';
 
@@ -152,6 +154,54 @@ export async function requestPasswordReset(payload: {
       ok: false,
       code: 'NETWORK_ERROR',
       message: 'Unable to connect. Please check your internet connection.',
+    };
+  }
+}
+
+export async function fetchTeacherOverview(): Promise<TeacherOverviewResponse> {
+  try {
+    const res = await fetch('/api/portal/teacher/overview', {
+      method: 'GET',
+      credentials: 'same-origin',
+    });
+    const data = await parseJsonSafe<TeacherOverviewResponse>(res);
+    if (data && typeof data.ok === 'boolean') return data;
+    return {
+      ok: false,
+      source: 'preview',
+      students: [],
+      message: 'Unable to load classroom records.',
+    };
+  } catch {
+    return {
+      ok: false,
+      source: 'preview',
+      students: [],
+      message: 'Unable to connect to the classroom server.',
+    };
+  }
+}
+
+export async function fetchParentOverview(): Promise<ParentOverviewResponse> {
+  try {
+    const res = await fetch('/api/portal/parent/overview', {
+      method: 'GET',
+      credentials: 'same-origin',
+    });
+    const data = await parseJsonSafe<ParentOverviewResponse>(res);
+    if (data && typeof data.ok === 'boolean') return data;
+    return {
+      ok: false,
+      source: 'preview',
+      children: [],
+      message: 'Unable to load your child’s learning progress.',
+    };
+  } catch {
+    return {
+      ok: false,
+      source: 'preview',
+      children: [],
+      message: 'Unable to connect to the classroom server.',
     };
   }
 }

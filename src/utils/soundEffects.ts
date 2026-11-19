@@ -181,8 +181,23 @@ export function playSoftSelect(): void {
   }).catch(() => {});
 }
 
-/** Cheerful, peaceful Frutiger Aero × cozy town music box loop */
-const MELODY_PATTERN: Array<{ lead: number; bass?: number }> = [
+/** Gentle three-tap wooden door knock sound for Screen 05 Aina's bedroom */
+export function playDoorKnock(): void {
+  const ctx = getContext();
+  if (!ctx) return;
+  ctx.resume().then(() => {
+    playTone(190, 0.09, { type: 'triangle', gain: 0.14, delay: 0, slideToFreq: 120 });
+    playTone(200, 0.09, { type: 'triangle', gain: 0.14, delay: 0.18, slideToFreq: 125 });
+    playTone(195, 0.1, { type: 'triangle', gain: 0.15, delay: 0.36, slideToFreq: 120 });
+  }).catch(() => {});
+}
+
+/** Dynamic background music moods: peaceful town, tense mystery, celebration */
+export type MusicMood = 'peaceful' | 'tense' | 'celebration';
+
+let currentMusicMood: MusicMood = 'peaceful';
+
+const PEACEFUL_PATTERN: Array<{ lead: number; bass?: number }> = [
   { lead: 523.25, bass: 261.63 }, // C5 + C4
   { lead: 659.25 },                 // E5
   { lead: 783.99 },                 // G5
@@ -201,32 +216,125 @@ const MELODY_PATTERN: Array<{ lead: number; bass?: number }> = [
   { lead: 523.25 },                 // C5
 ];
 
+// Minor / diminished chromatic suspense motif for tense detective moments
+const TENSE_PATTERN: Array<{ lead: number; bass?: number }> = [
+  { lead: 440.0, bass: 146.83 },  // A4 + D3
+  { lead: 466.16 },                 // Bb4 (minor 2nd tension)
+  { lead: 523.25, bass: 146.83 }, // C5 + D3
+  { lead: 415.3 },                  // G#4 (diminished colour)
+  { lead: 440.0, bass: 155.56 },  // A4 + Eb3
+  { lead: 554.37 },                 // C#5
+  { lead: 523.25, bass: 138.59 }, // C5 + C#3
+  { lead: 392.0 },                  // G4
+  { lead: 440.0, bass: 130.81 },  // A4 + C3
+  { lead: 466.16 },                 // Bb4
+  { lead: 587.33, bass: 146.83 }, // D5 + D3
+  { lead: 554.37 },                 // C#5
+  { lead: 523.25, bass: 123.47 }, // C5 + B2
+  { lead: 466.16 },                 // Bb4
+  { lead: 440.0, bass: 110.0 },   // A4 + A2
+  { lead: 369.99 },                 // F#4
+];
+
+const CELEBRATION_PATTERN: Array<{ lead: number; bass?: number }> = [
+  { lead: 523.25, bass: 261.63 }, // C5
+  { lead: 659.25 },                 // E5
+  { lead: 783.99, bass: 329.63 }, // G5
+  { lead: 1046.5 },                 // C6
+  { lead: 987.77, bass: 392.0 },  // B5
+  { lead: 880.0 },                  // A5
+  { lead: 783.99, bass: 349.23 }, // G5
+  { lead: 880.0 },                  // A5
+  { lead: 1046.5, bass: 261.63 }, // C6
+  { lead: 783.99 },                 // G5
+  { lead: 880.0, bass: 293.66 },  // A5
+  { lead: 987.77 },                 // B5
+  { lead: 1046.5, bass: 392.0 },  // C6
+  { lead: 783.99 },                 // G5
+  { lead: 659.25 },                 // E5
+  { lead: 783.99 },                 // G5
+];
+
+function scheduleNextMusicBeat(): void {
+  if (typeof window === 'undefined' || !musicEnabled) {
+    musicTimer = null;
+    return;
+  }
+
+  const tempoMs =
+    currentMusicMood === 'tense'
+      ? 355
+      : currentMusicMood === 'celebration'
+        ? 430
+        : 520;
+
+  musicTimer = window.setTimeout(() => {
+    musicTimer = null;
+    if (!musicEnabled) return;
+    const currentCtx = getContext(true);
+    if (currentCtx && currentCtx.state === 'running') {
+      const pattern =
+        currentMusicMood === 'tense'
+          ? TENSE_PATTERN
+          : currentMusicMood === 'celebration'
+            ? CELEBRATION_PATTERN
+            : PEACEFUL_PATTERN;
+      const note = pattern[musicStep % pattern.length];
+      musicStep += 1;
+
+      if (currentMusicMood === 'tense') {
+        playTone(note.lead, 0.28, {
+          type: 'sawtooth',
+          gain: 0.022,
+          allowWhenMuted: true,
+        });
+        if (note.bass) {
+          playTone(note.bass, 0.44, {
+            type: 'triangle',
+            gain: 0.052,
+            allowWhenMuted: true,
+          });
+        }
+      } else {
+        playTone(note.lead, 0.45, {
+          type: 'triangle',
+          gain: currentMusicMood === 'celebration' ? 0.052 : 0.046,
+          allowWhenMuted: true,
+        });
+        if (note.bass) {
+          playTone(note.bass, 0.8, {
+            type: 'sine',
+            gain: 0.036,
+            allowWhenMuted: true,
+          });
+        }
+      }
+    }
+    scheduleNextMusicBeat();
+  }, tempoMs);
+}
+
 function startMusicLoop(): void {
   if (typeof window === 'undefined' || !musicEnabled || musicTimer !== null) return;
   const ctx = getContext(true);
   if (!ctx) return;
+  scheduleNextMusicBeat();
+}
 
-  musicTimer = window.setInterval(() => {
-    if (!musicEnabled) return;
-    const currentCtx = getContext(true);
-    if (!currentCtx || currentCtx.state !== 'running') return;
+export function setMusicMood(mood: MusicMood): void {
+  if (currentMusicMood === mood) return;
+  currentMusicMood = mood;
+  musicStep = 0;
+  if (typeof window === 'undefined' || !musicEnabled) return;
+  if (musicTimer !== null) {
+    window.clearTimeout(musicTimer);
+    musicTimer = null;
+  }
+  startMusicLoop();
+}
 
-    const note = MELODY_PATTERN[musicStep % MELODY_PATTERN.length];
-    musicStep += 1;
-
-    playTone(note.lead, 0.48, {
-      type: 'triangle',
-      gain: 0.048,
-      allowWhenMuted: true,
-    });
-    if (note.bass) {
-      playTone(note.bass, 0.85, {
-        type: 'sine',
-        gain: 0.036,
-        allowWhenMuted: true,
-      });
-    }
-  }, 520);
+export function getMusicMood(): MusicMood {
+  return currentMusicMood;
 }
 
 export function setBackgroundMusicEnabled(enabled: boolean): void {
@@ -235,7 +343,7 @@ export function setBackgroundMusicEnabled(enabled: boolean): void {
 
   if (!enabled) {
     if (musicTimer !== null) {
-      window.clearInterval(musicTimer);
+      window.clearTimeout(musicTimer);
       musicTimer = null;
     }
     return;

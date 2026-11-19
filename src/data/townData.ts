@@ -396,6 +396,168 @@ export function findPathBetweenNodes(startId: string, endId: string): PathNode[]
   return [TOWN_PATH_NODES[endId]];
 }
 
+/**
+ * Smooth continuous movement along the cobblestone pathway network for WASD / Arrow keys.
+ * Automatically glides along curves and turns cleanly onto connected branches at intersections.
+ */
+export function stepAlongTownPath(
+  x: number,
+  y: number,
+  dirX: number,
+  dirY: number,
+  stepDist: number
+): { x: number; y: number; nodeId: string } {
+  const dirLen = Math.hypot(dirX, dirY);
+  if (dirLen === 0 || stepDist <= 0) {
+    const snapped = resolveWalkableClick(x, y, 100);
+    return { x, y, nodeId: snapped?.nearestNodeId ?? 'plaza-center' };
+  }
+  const ux = dirX / dirLen;
+  const uy = dirY / dirLen;
+
+  const rawX = Math.max(4, Math.min(92, x + ux * stepDist));
+  const rawY = Math.max(44, Math.min(89, y + uy * stepDist));
+
+  // Fast path: if raw target stays nicely inside the wide cobblestone corridor, move directly
+  const directCheck = resolveWalkableClick(rawX, rawY, 3.2);
+  if (directCheck && Math.hypot(rawX - directCheck.x, rawY - directCheck.y) <= 3.2) {
+    return {
+      x: Number(rawX.toFixed(2)),
+      y: Number(rawY.toFixed(2)),
+      nodeId: directCheck.nearestNodeId,
+    };
+  }
+
+  // Otherwise, slide smoothly along the best-aligned walkable segment or branch at a junction
+  let bestScore = -Infinity;
+  let bestPoint: { x: number; y: number; nodeId: string } | null = null;
+
+  for (const [aId, bId] of WALKABLE_SEGMENTS) {
+    const a = TOWN_PATH_NODES[aId];
+    const b = TOWN_PATH_NODES[bId];
+    const segInfo = distToSegment(x, y, a.x, a.y, b.x, b.y);
+    if (segInfo.distance > 6.5) continue;
+
+    const segDx = b.x - a.x;
+    const segDy = b.y - a.y;
+    const segLen = Math.hypot(segDx, segDy);
+    if (segLen === 0) continue;
+
+    const tx = segDx / segLen;
+    const ty = segDy / segLen;
+    const dot = ux * tx + uy * ty;
+
+    if (Math.abs(dot) < 0.1) continue;
+
+    const sign = dot > 0 ? 1 : -1;
+    const moveTx = tx * sign;
+    const moveTy = ty * sign;
+    const alignment = Math.abs(dot);
+
+    // Pull gently toward segment centerline while advancing along tangent
+    const pullX = segInfo.projX - x;
+    const pullY = segInfo.projY - y;
+    const advance = stepDist * Math.max(0.65, alignment);
+
+    const candX = x + moveTx * advance + pullX * 0.35;
+    const candY = y + moveTy * advance + pullY * 0.35;
+
+    // Clamp candidate onto the segment so we don't overshoot past endpoints
+    const clamped = distToSegment(candX, candY, a.x, a.y, b.x, b.y);
+    const movedX = clamped.projX - x;
+    const movedY = clamped.projY - y;
+    const movedDist = Math.hypot(movedX, movedY);
+    if (movedDist < 0.04) continue;
+
+    const progressDot = (movedX * ux + movedY * uy) / movedDist;
+    if (progressDot <= 0.05) continue;
+
+    const score = alignment * 2 + progressDot - segInfo.distance * 0.18;
+    if (score > bestScore) {
+      bestScore = score;
+      const distA = Math.hypot(clamped.projX - a.x, clamped.projY - a.y);
+      const distB = Math.hypot(clamped.projX - b.x, clamped.projY - b.y);
+      bestPoint = {
+        x: Number(clamped.projX.toFixed(2)),
+        y: Number(clamped.projY.toFixed(2)),
+        nodeId: distA <= distB ? aId : bId,
+      };
+    }
+  }
+
+  if (bestPoint) {
+    return bestPoint;
+  }
+
+  // Fallback: check nearest path node's neighbors so corners never stall
+  let nearestNode = TOWN_PATH_NODES['plaza-center'];
+  let minNodeDist = Infinity;
+  for (const node of Object.values(TOWN_PATH_NODES)) {
+    const d = Math.hypot(node.x - x, node.y - y);
+    if (d < minNodeDist) {
+      minNodeDist = d;
+      nearestNode = node;
+    }
+  }
+
+  let bestNeighbor: PathNode | null = null;
+  let bestNeighborDot = 0.1;
+  for (const neighborId of nearestNode.neighbors) {
+    const neighbor = TOWN_PATH_NODES[neighborId];
+    if (!neighbor) continue;
+    const dx = neighbor.x - x;
+    const dy = neighbor.y - y;
+    const d = Math.hypot(dx, dy);
+    if (d < 0.05) continue;
+    const dot = (dx / d) * ux + (dy / d) * uy;
+    if (dot > bestNeighborDot) {
+      bestNeighborDot = dot;
+      bestNeighbor = neighbor;
+    }
+  }
+
+  if (bestNeighbor) {
+    const dx = bestNeighbor.x - x;
+    const dy = bestNeighbor.y - y;
+    const d = Math.hypot(dx, dy);
+    const move = Math.min(stepDist, d);
+    const nx = x + (dx / d) * move;
+    const ny = y + (dy / d) * move;
+    return {
+      x: Number(nx.toFixed(2)),
+      y: Number(ny.toFixed(2)),
+      nodeId: move >= d * 0.6 ? bestNeighbor.id : nearestNode.id,
+    };
+  }
+
+  const fallback = resolveWalkableClick(x, y, 100);
+  return {
+    x: fallback?.x ?? x,
+    y: fallback?.y ?? y,
+    nodeId: fallback?.nearestNodeId ?? nearestNode.id,
+  };
+}
+
+export function findNearestBuildingToPoint(
+  x: number,
+  y: number,
+  maxDistance = 12
+): BuildingDefinition | null {
+  let closest: BuildingDefinition | null = null;
+  let minDist = maxDistance;
+  for (const building of TOWN_BUILDINGS) {
+    const door = TOWN_PATH_NODES[building.entranceNodeId];
+    const targetX = door ? door.x : building.x;
+    const targetY = door ? door.y : building.y;
+    const d = Math.hypot(targetX - x, targetY - y);
+    if (d <= minDist) {
+      minDist = d;
+      closest = building;
+    }
+  }
+  return closest;
+}
+
 export const WELCOME_DIALOGUE_SCRIPT: DialogueStep[] = [
   {
     id: 'w1',

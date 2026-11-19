@@ -526,70 +526,363 @@ export const HudModals: React.FC<HudModalsProps> = ({
           })()}
 
           {/* 3. MISSION TRACKER */}
-          {activeModal === 'mission-tracker' && (
-            <>
-              <div className="rounded-2xl bg-gradient-to-br from-purple-50/95 via-white to-sky-50/95 border border-purple-200 p-4 sm:p-5 space-y-3 shadow-xs">
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <span className="text-xs font-extrabold tracking-widest uppercase text-[#6D28D9]">
-                    YOUR ADVENTURE
-                  </span>
-                  <span className="rounded-lg bg-emerald-100 border border-emerald-300 px-2.5 py-0.5 text-[11px] font-extrabold text-[#15803D]">
-                    STATUS: READY TO BEGIN
-                  </span>
-                </div>
+          {activeModal === 'mission-tracker' && (() => {
+            const s3 = gameState.screen03Progress;
+            const s4 = gameState.screen04Progress;
+            const s5 = gameState.screen05Progress;
+            const s6 = gameState.screen06Progress;
+            const s7 = gameState.screen07Progress;
+            const redFlagUnlocked =
+              Boolean(s3?.redFlagCentreUnlocked) ||
+              gameState.unlockedBuildings.includes('red-flag-centre');
+            const ainaUnlocked =
+              Boolean(s4?.ainasHouseUnlocked) ||
+              gameState.unlockedBuildings.includes('ainas-house');
+            const cafeUnlocked =
+              Boolean(s5?.cyberCafeUnlocked) ||
+              gameState.unlockedBuildings.includes('cyber-cafe');
+            const adviceUnlocked =
+              Boolean(s6?.adviceCentreUnlocked) ||
+              gameState.unlockedBuildings.includes('advice-centre');
+            const arcadeUnlocked =
+              Boolean(s7?.gameArcadeUnlocked) ||
+              gameState.unlockedBuildings.includes('game-arcade');
+            const inductionDone = Boolean(s3?.inductionCompleted);
 
-                <div>
-                  <p className="text-xs font-extrabold uppercase tracking-wider text-[#0284C7]">
-                    MISSION 01
-                  </p>
-                  <h3 className="font-[var(--font-display)] text-lg sm:text-xl font-bold text-[#1E1B4B]">
-                    THE MYSTERY OF THE UNEXPECTED PRIZE
-                  </h3>
-                </div>
+            const nextMissionEyebrow = arcadeUnlocked
+              ? 'NEXT LOCATION: GAME ARCADE'
+              : adviceUnlocked
+                ? 'ACTIVITY 4 · ADVICE CENTRE'
+                : cafeUnlocked
+                  ? 'ACTIVITY 3 · CYBER CAFÉ'
+                  : ainaUnlocked
+                    ? "ACTIVITY 2 · AINA'S HOUSE"
+                    : redFlagUnlocked
+                      ? 'MISSION 02 · RED FLAG CENTRE'
+                      : 'MISSION 01 · INDUCTION';
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
-                  <div className="rounded-xl bg-white/90 border border-sky-100 p-3 flex items-start gap-2">
-                    <MapPin className="h-4 w-4 text-[#0284C7] shrink-0 mt-0.5" aria-hidden="true" />
-                    <div>
-                      <p className="text-[11px] font-extrabold text-[#5B7A96]">LOCATION</p>
-                      <p className="font-bold text-[#0E3558]">DETECTIVE HQ</p>
+            const nextMissionTitle = arcadeUnlocked
+              ? 'GAME ARCADE · SCREEN 08 READY'
+              : adviceUnlocked
+                ? 'WORDS THAT HELP · ASKING & GIVING ADVICE'
+                : cafeUnlocked
+                  ? 'HELP BYTE INVESTIGATE 10 MESSAGE FILES!'
+                  : ainaUnlocked
+                    ? 'THE MYSTERY OF THE LUCKY MESSAGE'
+                    : redFlagUnlocked
+                      ? 'SPOT THE WARNING SIGNS IN DIGITAL MESSAGES'
+                      : 'THE MYSTERY OF THE UNEXPECTED PRIZE';
+
+            const nextLocationLabel = arcadeUnlocked
+              ? 'GAME ARCADE (UNLOCKED)'
+              : adviceUnlocked
+                ? 'ADVICE CENTRE (UNLOCKED)'
+                : cafeUnlocked
+                  ? 'CYBER CAFÉ (UNLOCKED)'
+                  : ainaUnlocked
+                    ? "AINA'S HOUSE (UNLOCKED)"
+                    : redFlagUnlocked
+                      ? 'RED FLAG CENTRE (UNLOCKED)'
+                      : 'DETECTIVE HQ';
+
+            const nextObjectiveLabel = arcadeUnlocked
+              ? 'You completed Activities 1–4 and earned your Words That Help portfolio! Game Arcade (Screen 08) is now unlocked.'
+              : adviceUnlocked
+                ? 'Explore the Advice Centre, read the 3 Advice Cards, complete Writing Missions 1–3, and tick all 3 Self-Check items.'
+                : cafeUnlocked
+                  ? "Meet Byte at the Cyber Café, sit at an empty computer, classify all 10 message files, solve Part C & D, and earn Byte's Helper badge!"
+                  : ainaUnlocked
+                    ? "Visit Aina's House, walk through the rooms with WASD to find her bedroom, read the Lucky Message story (Q1–Q5), and write caring advice."
+                    : redFlagUnlocked
+                      ? 'Investigate the suspicious AeroMail email, collect all 5 warning signs, and complete the Red Flag Centre knowledge check.'
+                      : 'Watch a video about a suspicious online message, decide whether you would click it, and learn three online safety rules.';
+
+            return (
+              <>
+                <div className="rounded-2xl bg-gradient-to-br from-purple-50/95 via-white to-sky-50/95 border border-purple-200 p-4 sm:p-5 space-y-3 shadow-xs">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <span className="text-xs font-extrabold tracking-widest uppercase text-[#6D28D9]">
+                      YOUR ADVENTURE
+                    </span>
+                    <span className="rounded-lg border px-2.5 py-0.5 text-[11px] font-extrabold bg-emerald-100 border-emerald-300 text-[#15803D]">
+                      {arcadeUnlocked
+                        ? 'ACTIVITIES 1–4 COMPLETED!'
+                        : adviceUnlocked
+                          ? 'ACTIVITY 3 COMPLETED!'
+                          : cafeUnlocked
+                            ? 'ACTIVITIES 1 & 2 COMPLETED!'
+                            : s4?.activityCompleted
+                              ? 'MISSION 02 COMPLETED!'
+                              : inductionDone
+                                ? 'INDUCTION COMPLETED!'
+                                : s3?.hqEntered
+                                  ? 'STATUS: IN PROGRESS'
+                                  : 'STATUS: READY TO BEGIN'}
+                    </span>
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-extrabold uppercase tracking-wider text-[#0284C7]">
+                      {nextMissionEyebrow}
+                    </p>
+                    <h3 className="font-[var(--font-display)] text-lg sm:text-xl font-bold text-[#1E1B4B]">
+                      {nextMissionTitle}
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
+                    <div className="rounded-xl bg-white/90 border border-sky-100 p-3 flex items-start gap-2">
+                      <MapPin className="h-4 w-4 text-[#0284C7] shrink-0 mt-0.5" aria-hidden="true" />
+                      <div>
+                        <p className="text-[11px] font-extrabold text-[#5B7A96]">LOCATION</p>
+                        <p className="font-bold text-[#0E3558]">{nextLocationLabel}</p>
+                      </div>
+                    </div>
+                    <div className="rounded-xl bg-white/90 border border-purple-100 p-3 flex items-start gap-2">
+                      <BookOpen className="h-4 w-4 text-[#6D28D9] shrink-0 mt-0.5" aria-hidden="true" />
+                      <div>
+                        <p className="text-[11px] font-extrabold text-[#5B7A96]">OBJECTIVE</p>
+                        <p className="font-semibold text-[#0E3558]">{nextObjectiveLabel}</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="rounded-xl bg-white/90 border border-purple-100 p-3 flex items-start gap-2">
-                    <BookOpen className="h-4 w-4 text-[#6D28D9] shrink-0 mt-0.5" aria-hidden="true" />
-                    <div>
-                      <p className="text-[11px] font-extrabold text-[#5B7A96]">OBJECTIVE</p>
-                      <p className="font-semibold text-[#0E3558]">
-                        &ldquo;Watch a video about a suspicious online message and decide whether you
-                        would click it.&rdquo;
+
+                  {s3 && (
+                    <div className="rounded-xl bg-white/85 border border-sky-100 p-3 space-y-1.5">
+                      <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#0369A1]">
+                        MISSION 01 · DETECTIVE HQ INDUCTION
                       </p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs font-semibold text-[#0E3558]">
+                        <li className={s3.videoCompleted ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s3.videoCompleted ? '✓' : '○'} Watched the investigation video
+                        </li>
+                        <li className={s3.problemIdentified ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s3.problemIdentified ? '✓' : '○'} Identified the problem
+                        </li>
+                        <li className={s3.decisionCompleted ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s3.decisionCompleted ? '✓' : '○'} Completed the YES/NO decision
+                        </li>
+                        <li
+                          className={
+                            s3.rulesCompleted.rule1 &&
+                            s3.rulesCompleted.rule2 &&
+                            s3.rulesCompleted.rule3
+                              ? 'text-[#15803D]'
+                              : 'text-[#64748B]'
+                          }
+                        >
+                          {s3.rulesCompleted.rule1 &&
+                          s3.rulesCompleted.rule2 &&
+                          s3.rulesCompleted.rule3
+                            ? '✓'
+                            : '○'}{' '}
+                          Explored three online safety rules
+                        </li>
+                        <li
+                          className={
+                            s3.knowledgeCheckCompleted ? 'text-[#15803D]' : 'text-[#64748B]'
+                          }
+                        >
+                          {s3.knowledgeCheckCompleted ? '✓' : '○'} Completed quick understanding check
+                        </li>
+                      </ul>
                     </div>
+                  )}
+
+                  {redFlagUnlocked && (
+                    <div className="rounded-xl bg-white/85 border border-rose-100 p-3 space-y-1.5">
+                      <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#BE123C]">
+                        MISSION 02 · RED FLAG CENTRE (SPOT THE WARNING SIGNS)
+                      </p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs font-semibold text-[#0E3558]">
+                        <li
+                          className={
+                            s4?.learningExamplesExplored.example1 &&
+                            s4?.learningExamplesExplored.example2 &&
+                            s4?.learningExamplesExplored.example3
+                              ? 'text-[#15803D]'
+                              : 'text-[#64748B]'
+                          }
+                        >
+                          {s4?.learningExamplesExplored.example1 &&
+                          s4?.learningExamplesExplored.example2 &&
+                          s4?.learningExamplesExplored.example3
+                            ? '✓'
+                            : '○'}{' '}
+                          Learned Red Flag clues &amp; safety signs
+                        </li>
+                        <li
+                          className={
+                            (s4?.discoveredClues.length ?? 0) >= 5
+                              ? 'text-[#15803D]'
+                              : 'text-[#64748B]'
+                          }
+                        >
+                          {(s4?.discoveredClues.length ?? 0) >= 5 ? '✓' : '○'} Found email warning
+                          signs ({s4?.discoveredClues.length ?? 0}/5)
+                        </li>
+                        <li className={s4?.masteryAchieved ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s4?.masteryAchieved ? '✓' : '○'} Knowledge Check (First try:{' '}
+                          {s4?.firstAttemptScore ?? 0}/5)
+                        </li>
+                        <li className={ainaUnlocked ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {ainaUnlocked ? '✓' : '○'} Unlocked Aina&apos;s House
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+
+                  {ainaUnlocked && (
+                    <div className="rounded-xl bg-white/85 border border-fuchsia-100 p-3 space-y-1.5">
+                      <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#9333EA]">
+                        ACTIVITY 2 · AINA&apos;S HOUSE (LUCKY MESSAGE MYSTERY)
+                      </p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs font-semibold text-[#0E3558]">
+                        <li className={s5?.foundAinasRoom ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s5?.foundAinasRoom ? '✓' : '○'} Found Aina&apos;s Bedroom
+                        </li>
+                        <li className={s5?.readingCompleted ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s5?.readingCompleted ? '✓' : '○'} Reading Q1–Q5 (First try:{' '}
+                          {s5?.firstAttemptScore ?? 0}/5 · Final:{' '}
+                          {s5?.readingResponses.filter((r) => Boolean(r.finalCorrectAnswer)).length ??
+                            0}
+                          /5)
+                        </li>
+                        <li className={s5?.writingCompleted ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s5?.writingCompleted ? '✓' : '○'} Completed 3-step Advice Chat
+                        </li>
+                        <li className={cafeUnlocked ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {cafeUnlocked ? '✓' : '○'} Unlocked Cyber Café (Screen 06)
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+
+                  {cafeUnlocked && (
+                    <div className="rounded-xl bg-white/85 border border-cyan-100 p-3 space-y-1.5">
+                      <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#0284C7]">
+                        ACTIVITY 3 · CYBER CAFÉ (HELP BYTE INVESTIGATE!)
+                      </p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs font-semibold text-[#0E3558]">
+                        <li
+                          className={
+                            (s6?.casesCompleted.length ?? 0) >= 10
+                              ? 'text-[#15803D]'
+                              : 'text-[#64748B]'
+                          }
+                        >
+                          {(s6?.casesCompleted.length ?? 0) >= 10 ? '✓' : '○'} Digital Message Files (
+                          {s6?.casesCompleted.length ?? 0}/10 · 1st try:{' '}
+                          {s6?.firstAttemptCasesScore ?? 0}/10)
+                        </li>
+                        <li className={s6?.partCCompleted ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s6?.partCCompleted ? '✓' : '○'} Part C: Choose Correct Action
+                        </li>
+                        <li
+                          className={s6?.miniChallengeCompleted ? 'text-[#15803D]' : 'text-[#64748B]'}
+                        >
+                          {s6?.miniChallengeCompleted ? '✓' : '○'} Part D: 3-Message Challenge
+                        </li>
+                        <li className={s6?.badgeAwarded ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {s6?.badgeAwarded ? '✓' : '○'} Earned Byte&apos;s Helper Badge
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+
+                  {adviceUnlocked && (
+                    <div className="rounded-xl bg-white/85 border border-teal-100 p-3 space-y-1.5">
+                      <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#0D9488]">
+                        ACTIVITY 4 · ADVICE CENTRE (WORDS THAT HELP)
+                      </p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs font-semibold text-[#0E3558]">
+                        <li
+                          className={
+                            s7?.learningCardsExplored.card1 &&
+                            s7?.learningCardsExplored.card2 &&
+                            s7?.learningCardsExplored.card3
+                              ? 'text-[#15803D]'
+                              : 'text-[#64748B]'
+                          }
+                        >
+                          {s7?.learningCardsExplored.card1 &&
+                          s7?.learningCardsExplored.card2 &&
+                          s7?.learningCardsExplored.card3
+                            ? '✓'
+                            : '○'}{' '}
+                          Opened all 3 Advice Learning Cards
+                        </li>
+                        <li
+                          className={
+                            s7?.writingPortfolio.submittedAt ? 'text-[#15803D]' : 'text-[#64748B]'
+                          }
+                        >
+                          {s7?.writingPortfolio.submittedAt ? '✓' : '○'} Completed 3-Part Advice Chat
+                        </li>
+                        <li
+                          className={
+                            s7?.selfCheck.askAdvice &&
+                            s7?.selfCheck.giveAdvice &&
+                            s7?.selfCheck.respondAdvice
+                              ? 'text-[#15803D]'
+                              : 'text-[#64748B]'
+                          }
+                        >
+                          {s7?.selfCheck.askAdvice &&
+                          s7?.selfCheck.giveAdvice &&
+                          s7?.selfCheck.respondAdvice
+                            ? '✓'
+                            : '○'}{' '}
+                          Self-Check (
+                          {[
+                            s7?.selfCheck.askAdvice,
+                            s7?.selfCheck.giveAdvice,
+                            s7?.selfCheck.respondAdvice,
+                          ].filter(Boolean).length}
+                          /3)
+                        </li>
+                        <li className={arcadeUnlocked ? 'text-[#15803D]' : 'text-[#64748B]'}>
+                          {arcadeUnlocked ? '✓' : '○'} Unlocked Game Arcade (Screen 08)
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <div className="rounded-2xl bg-sky-50/90 border border-sky-200 p-3.5 flex items-center gap-3">
+                  <div className="h-12 w-12 shrink-0">
+                    <PusheenIllustration
+                      expression={arcadeUnlocked || adviceUnlocked || cafeUnlocked || inductionDone ? 'celebrating' : 'happy'}
+                    />
                   </div>
+                  <p className="text-xs sm:text-sm font-semibold text-[#0E3558]">
+                    <strong>Detective Pusheen:</strong>{' '}
+                    {arcadeUnlocked
+                      ? '“Purr-fect work completing Activities 1–4! The Game Arcade is now unlocked on Detective Town!”'
+                      : adviceUnlocked
+                        ? '“Visit the Advice Centre next to practise asking, giving, and responding to online safety advice!”'
+                        : cafeUnlocked
+                          ? '“Amazing work helping Aina! Cyber Café is now open on your Detective Town map!”'
+                          : ainaUnlocked
+                            ? '“Head over to Aina’s House next! She needs our detective reading and advice skills.”'
+                            : redFlagUnlocked
+                              ? '“You finished the Detective HQ induction! Head over to Red Flag Centre next!”'
+                              : '“See? This is your first mission! Whenever you need to remember what you’re supposed to do, just check your Mission Tracker.”'}
+                  </p>
                 </div>
-              </div>
 
-              <div className="rounded-2xl bg-sky-50/90 border border-sky-200 p-3.5 flex items-center gap-3">
-                <div className="h-12 w-12 shrink-0">
-                  <PusheenIllustration expression="happy" />
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleRequestClose}
+                    className="aero-glossy-btn min-h-[42px] rounded-full bg-gradient-to-b from-[#2AB2DF] to-[#0E83B5] px-6 py-2 text-xs sm:text-sm font-bold text-white cursor-pointer"
+                  >
+                    CLOSE TRACKER
+                  </button>
                 </div>
-                <p className="text-xs sm:text-sm font-semibold text-[#0E3558]">
-                  <strong>Detective Pusheen:</strong> &ldquo;See? This is your first mission! Whenever
-                  you need to remember what you&apos;re supposed to do, just check your Mission
-                  Tracker.&rdquo;
-                </p>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={handleRequestClose}
-                  className="aero-glossy-btn min-h-[42px] rounded-full bg-gradient-to-b from-[#2AB2DF] to-[#0E83B5] px-6 py-2 text-xs sm:text-sm font-bold text-white cursor-pointer"
-                >
-                  CLOSE TRACKER
-                </button>
-              </div>
-            </>
-          )}
+              </>
+            );
+          })()}
 
           {/* 4. SETTINGS & HELP */}
           {(activeModal === 'settings' || activeModal === 'help') && (
